@@ -1,2 +1,2 @@
 # Cinema-Control-System
-First project in Java
+First Java project
