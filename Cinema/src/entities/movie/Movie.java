@@ -1,15 +1,16 @@
 package entities.movie;
-import entities.movie.Gender;
 
 public class Movie
 {
     private String movieName;
     private int movieDuration;
     private final Gender movieGender;
+    private final Act actMovie;
 
     public Movie()
     {
         this.movieGender = new Gender();
+        this.actMovie = new Act();
     }
 
     public void setMovieName (String movieName)
@@ -27,6 +28,16 @@ public class Movie
         this.movieGender.setDescription(movieGender);
     }
 
+    public void setActorName(String actorName)
+    {
+        this.actMovie.setActorName(actorName);
+    }
+
+    public void setActorRole (String actorRole)
+    {
+        this.actMovie.setRoleInMovie(actorRole);
+    }
+
     public String getMovieName ()
     {
         return movieName;
@@ -40,5 +51,25 @@ public class Movie
     public String getMovieGender ()
     {
         return movieGender.getDescription();
+    }
+
+    public String getActorName ()
+    {
+        return actMovie.getActorName();
+    }
+
+    public String getActorRole ()
+    {
+        return actMovie.getRoleInMovie();
+    }
+
+    public void getMovie ()
+    {
+        System.out.println("Filme: " + getMovieName());
+        System.out.println("Gênero: " + getMovieGender());
+        System.out.println("Duração (Em minutos): " + getMovieDuration());
+        System.out.println("Ator(a) principal: " + getActorName());
+        System.out.println("Papel do(a) ator(a) " +  getActorName() + ": '" + getActorRole() + "'");
+        System.out.println("=======================================\n");
     }
 }
