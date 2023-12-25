@@ -8,7 +8,8 @@ public class Program
     static ArrayList<Movie> moviesList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
     static int contMovies = 1;
-    static void ShowMoviesList()
+    static boolean verify;
+    static void ShowMoviesList ()
     {
         for (Movie movie : moviesList)
         {
@@ -19,25 +20,68 @@ public class Program
             contMovies++;
         }
     }
+
+    static void removeMovie ()
+    {
+
+    }
     public static void MainMovies()
     {
         Movie movie = new Movie();
 
         System.out.println("=========================================");
-        System.out.println("Informe o nome do filme:");
-        movie.setMovieName(scanner.nextLine());
-        System.out.println("Informe o gênero do filme:");
-        movie.setMovieGender(scanner.nextLine());
-        System.out.println("Informe a duração do filme em minutos:");
-        movie.setMovieDuration(scanner.nextLine());
+        String movieName;
+        String movieGender;
+        String movieDuration;
+        do
+        {
+            System.out.println("Informe o nome do filme:");
+            movieName = scanner.nextLine();
+        }
+        while (movieName.trim().isEmpty());
+
+        do
+        {
+            System.out.println("Informe o gênero do filme:");
+            movieGender = scanner.nextLine();
+        }
+        while (movieGender.trim().isEmpty() );
+
+        do
+        {
+            verify = true;
+
+            System.out.println("Informe a duração do filme em minutos:");
+            movieDuration = scanner.nextLine();
+
+            try
+            {
+                if (Integer.parseInt(movieDuration) <= 0)
+                {
+                    System.out.println("Informe um valor válido!\n");
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("ERROR: Tipo inválido de dado!\n");
+                verify = false;
+            }
+        }
+        while (movieDuration.trim().isEmpty() || !verify || Integer.parseInt(movieDuration) <= 0);
+
+        System.out.println("Filme " + "'" + movieName + "'" + " adicionado com sucesso!\n");
+        movie.setMovieName(movieName);
+        movie.setMovieGender(movieGender);
+        movie.setMovieDuration(Integer.parseInt(movieDuration));
         moviesList.add(movie);
 
-        System.out.println("Listar outro filme ou encerrar?\n1 - Continuar\n2 - Ver lista\n3 - Encerrar");
+        System.out.println("O que deseja?\n1 - Listar outro filme\n2 - Ver lista\n3 - Remover filme\n4 - Encerrar");
         switch (scanner.nextLine())
         {
             case "1" -> MainMovies();
             case "2" -> ShowMoviesList();
-            case "3" -> System.out.println("Encerrando...");
+            case "3" -> removeMovie();
+            default -> System.out.println("Encerrando...");
         }
     }
 }

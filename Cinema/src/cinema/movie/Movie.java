@@ -1,22 +1,23 @@
 package cinema.movie;
-import cinema.genero.Genero;
+import cinema.genero.Gender;
 
 public class Movie
 {
     private String movieName;
-    private String movieDuration;
-    private Genero movieGender;
+    private int movieDuration;
+    private final Gender movieGender;
 
     public Movie()
     {
-        this.movieGender = new Genero();
+        this.movieGender = new Gender();
     }
 
     public void setMovieName (String movieName)
     {
         this.movieName = movieName;
     }
-    public void setMovieDuration (String movieDuration)
+
+    public void setMovieDuration (int movieDuration)
     {
         this.movieDuration = movieDuration;
     }
@@ -31,18 +32,13 @@ public class Movie
         return movieName;
     }
 
-    public String getMovieDuration ()
+    public int getMovieDuration ()
     {
         return movieDuration;
     }
+
     public String getMovieGender ()
     {
         return movieGender.getDescription();
-    }
-    public void getMovie()
-    {
-        System.out.println("Filme: " + getMovieName());
-        System.out.println("Gênero: " + getMovieGender());
-        System.out.println("Duração (Em minutos): " + getMovieDuration());
     }
 }
