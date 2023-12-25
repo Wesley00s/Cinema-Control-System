@@ -1,4 +1,4 @@
-package cinema.genero;
+package entities.movie;
 
 public class Gender
 {

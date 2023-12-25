@@ -1,5 +1,5 @@
-package cinema.movie;
-import cinema.genero.Gender;
+package entities.movie;
+import entities.movie.Gender;
 
 public class Movie
 {
