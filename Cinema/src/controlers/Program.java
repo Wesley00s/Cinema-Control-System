@@ -11,7 +11,7 @@ public class Program
     static boolean findMovieToRemove;
     static Movie movieRemoved;
     static boolean validMovieDuration;
-    static  boolean findMovieName;
+    static boolean findMovieName;
 
     static void ShowMoviesList ()
     {
