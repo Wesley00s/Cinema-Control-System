@@ -101,15 +101,18 @@ public class SectionManager
         while (roomNum.trim().isEmpty() || invalidData || Integer.parseInt(roomNum) < 0);
     }
 
+    public static int seatCode = 1;
     public static void generateSeatCode()
     {
-        int seatCode = 1;
         for (Room roomSeat : roomList)
         {
-            for (int i = 0; i < roomSeat.getRoomCapacity(); i++)
+            if (roomSeat.seatList.isEmpty())
             {
-                roomSeat.setSeatList(seatCode);
-                seatCode++;
+                for (int i = 0; i < roomSeat.getRoomCapacity(); i++)
+                {
+                    roomSeat.setSeatList(seatCode);
+                    seatCode++;
+                }
             }
         }
     }
