@@ -1,7 +1,6 @@
 package program;
-
-import repositories.MoviesProgram;
-import repositories.SectionProgram;
+import repositories.MoviesManager;
+import repositories.SectionManager;
 import java.util.Scanner;
 
 public class Main
@@ -15,12 +14,12 @@ public class Main
             case "1" ->
             {
                 System.out.println("\n\t############## APLICAÇÃO 1 - ADICIONAR FILMES ##############\n");
-                MoviesProgram.addMovies();
+                MoviesManager.addMovies();
             }
             case "2" ->
             {
                 System.out.println("\n\t############## APLICAÇÃO 2 - GERENCIAR SALAS ##############\n");
-                SectionProgram.sectionOpc();
+                SectionManager.sectionOpc();
             }
             default -> System.out.println("Opção inválida. Encerrando programa...\n");
         }

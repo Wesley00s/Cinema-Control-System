@@ -3,7 +3,7 @@ import entities.movie.Movie;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MoviesProgram
+public class MoviesManager
 {
     static ArrayList<Movie> moviesList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);

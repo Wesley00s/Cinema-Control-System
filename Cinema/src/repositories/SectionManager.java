@@ -3,7 +3,7 @@ import entities.section.Room;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SectionProgram
+public class SectionManager
 {
     static ArrayList<Room> roomList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
@@ -101,6 +101,19 @@ public class SectionProgram
         while (roomNum.trim().isEmpty() || invalidData || Integer.parseInt(roomNum) < 0);
     }
 
+    public static void generateSeatCode()
+    {
+        int seatCode = 1;
+        for (Room roomSeat : roomList)
+        {
+            for (int i = 0; i < roomSeat.getRoomCapacity(); i++)
+            {
+                roomSeat.setSeatList(seatCode);
+                seatCode++;
+            }
+        }
+    }
+
     static void roomMenu ()
     {
         System.out.println("O que deseja?\n1 - Cadastrar outra sala\n2 - Listar salas\n3 - Procurar sala\n4 - Remover cadastro\n5 - Encerrar");
@@ -179,6 +192,7 @@ public class SectionProgram
         System.out.println("Sala número '" + roomNum + "' cadastrada com sucesso!\n");
 
         roomList.add(room);
+        generateSeatCode();
         roomMenu();
     }
 }
