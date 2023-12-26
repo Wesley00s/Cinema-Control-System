@@ -6,7 +6,6 @@ public class Room
     public ArrayList<Seat> seatList = new ArrayList<>();
     private int roomNum;
     private int roomCapacity;
-//    private final Seat seat = new Seat();
 
     public void setRoomNum (int roomNum)
     {
