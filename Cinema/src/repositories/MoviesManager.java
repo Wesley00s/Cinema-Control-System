@@ -3,6 +3,9 @@ import entities.movie.Movie;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static repositories.GenerateID.idGenerate;
+import static repositories.ManagerProgram.managerMenu;
+
 public class MoviesManager
 {
     static ArrayList<Movie> moviesList = new ArrayList<>();
@@ -38,7 +41,7 @@ public class MoviesManager
     {
         if (moviesList.isEmpty())
         {
-            System.out.println("a lista de filmes está vazia!");
+            System.out.println("A lista de filmes está vazia!");
             return;
         }
         contMovies = 1;
@@ -80,17 +83,18 @@ public class MoviesManager
             System.out.println("Filme '" + movieRemove + "' não encontrado.\n");
         }
     }
-    static void menuOpt()
+    public static void moviesMenu()
     {
-        System.out.println("O que deseja?\n1 - Listar outro filme\n2 - Ver lista\n3 - Remover filme\n4 - Procurar filme\n5 - Encerrar");
+        System.out.println("\n\t############## APLICAÇÃO 1 - ADICIONAR FILMES ##############\n");
+        System.out.println("O que deseja?\n1 - Listar filme\n2 - Ver lista\n3 - Remover filme\n4 - Procurar filme\n5 - Retornar");
         switch (scanner.nextLine())
         {
             case "1" -> addMovies();
-            case "2" -> {showMoviesList(); menuOpt();}
-            case "3" -> {removeMovie(); menuOpt();}
-            case "4" -> {searchMovie(); menuOpt();}
-            case "5" -> System.out.println("Encerrando...");
-            default -> {System.out.println("Opção inválida!\n"); menuOpt();}
+            case "2" -> {showMoviesList(); moviesMenu();}
+            case "3" -> {removeMovie(); moviesMenu();}
+            case "4" -> {searchMovie(); moviesMenu();}
+            case "5" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
+            default -> {System.out.println("Opção inválida!\n"); moviesMenu();}
         }
     }
     public static void addMovies()
@@ -167,8 +171,9 @@ public class MoviesManager
         movie.setMovieDuration(Integer.parseInt(movieDuration));
         movie.setActorName(actor);
         movie.setActorRole(actorRole);
+        movie.setId(idGenerate());
         moviesList.add(movie);
         System.out.println("Filme '" + movieName + "' adicionado com sucesso!\n");
-        menuOpt();
+        moviesMenu();
     }
 }

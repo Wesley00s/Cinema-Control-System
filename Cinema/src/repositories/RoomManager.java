@@ -1,9 +1,11 @@
 package repositories;
-import entities.section.Room;
+import entities.session.Room;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SectionManager
+import static repositories.ManagerProgram.managerMenu;
+
+public class RoomManager
 {
     static ArrayList<Room> roomList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
@@ -53,7 +55,7 @@ public class SectionManager
         while (roomNum.trim().isEmpty() || invalidData || Integer.parseInt(roomNum) < 0);
     }
 
-    static void removeRoom ()
+     static void removeRoom ()
     {
         String roomNum;
         Room roomRemoved = null;
@@ -117,22 +119,23 @@ public class SectionManager
         }
     }
 
-    static void roomMenu ()
+    public static void roomMenu ()
     {
-        System.out.println("O que deseja?\n1 - Cadastrar outra sala\n2 - Listar salas\n3 - Procurar sala\n4 - Remover cadastro\n5 - Encerrar");
+        System.out.println("\n\t############## APLICAÇÃO 2 - GERENCIAR SALAS ##############\n");
+        System.out.println("O que deseja?\n1 - Cadastrar sala\n2 - Listar salas\n3 - Procurar sala\n4 - Remover cadastro\n5 - Retornar");
 
         switch (scanner.nextLine())
         {
-            case "1" -> sectionOpc();
+            case "1" -> roomOpc();
             case "2" -> {showRooms(); roomMenu();}
             case "3" -> {searchRoom(); roomMenu();}
             case "4" -> {removeRoom(); roomMenu();}
-            case "5" -> System.out.println("Encerrando...\n");
+            case "5" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
             default -> {System.out.println("Opção inválida!\n"); roomMenu();}
         }
     }
 
-    public static void sectionOpc ()
+    public static void roomOpc()
     {
         Room room = new Room();
         String  roomNum;

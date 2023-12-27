@@ -2,6 +2,7 @@ package entities.movie;
 
 public class Movie
 {
+    private String id;
     private String movieName;
     private int movieDuration;
     private final Gender movieGender;
@@ -38,6 +39,11 @@ public class Movie
         this.actMovie.setRoleInMovie(actorRole);
     }
 
+    public void setId(String id)
+    {
+        this.id = "F-" + id;
+    }
+
     public String getMovieName ()
     {
         return movieName;
@@ -63,8 +69,14 @@ public class Movie
         return actMovie.getRoleInMovie();
     }
 
+    public String getId()
+    {
+        return id;
+    }
+
     public void getMovie ()
     {
+        System.out.println("ID do filme: " + getId());
         System.out.println("Filme: " + getMovieName());
         System.out.println("Gênero: " + getMovieGender());
         System.out.println("Duração (Em minutos): " + getMovieDuration());

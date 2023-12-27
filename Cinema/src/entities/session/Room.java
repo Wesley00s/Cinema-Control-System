@@ -1,4 +1,4 @@
-package entities.section;
+package entities.session;
 import java.util.ArrayList;
 
 public class Room
