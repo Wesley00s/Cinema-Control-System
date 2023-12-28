@@ -1,4 +1,5 @@
 package repositories;
+import entities.movie.Movie;
 import entities.session.Session;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.*;
 
 import static repositories.GenerateID.idGenerate;
 import static repositories.ManagerProgram.managerMenu;
+import static repositories.MoviesManager.moviesList;
 
 public class SessionManager
 {
@@ -40,9 +42,9 @@ public class SessionManager
         }
         while (sessionId.trim().isEmpty());
     }
-    static void listSession ()
+    static void displaySessions()
     {
-        System.out.println("\n\tSESSÕES");
+        System.out.println("\n\t ============== SESSÕES ==============");
         for (Session session : sessionList)
         {
             session.getSession();
@@ -51,11 +53,11 @@ public class SessionManager
     public static void sessionManagerMenu()
     {
         System.out.println("\n\t############## APLICAÇÃO 3 - GERENCIAR SESSÕES ##############\n");
-        System.out.println("O que desejas?\n1 - Adicionar sessão\n2 - Listar sessões\n3 - Procurar sessão\n4 - Retornar");
+        System.out.println("O que desejas?\n1 - Adicionar sessão\n2 - Ver lista de sessões\n3 - Procurar sessão\n4 - Retornar");
         switch (scanner.nextLine())
         {
             case "1" -> addSession();
-            case "2" -> {listSession(); sessionManagerMenu();}
+            case "2" -> {displaySessions(); sessionManagerMenu();}
             case "3" -> {searchSection(); sessionManagerMenu();}
             case "4" -> {System.out.println("Retornando ao menu do administrador..."); managerMenu();}
             default -> {System.out.println("Opção inválida!\n"); sessionManagerMenu();}
@@ -63,13 +65,15 @@ public class SessionManager
     }
     private static void addSession()
     {
-        Session session = new Session();
         LocalDate sessionDate = null;
         LocalTime sessionTime = null;
         String stringSessionTime;
         String stringSessionDate;
         String ticketPrice;
+        String movieAdd;
+        Movie movieSession = null;
         boolean invalidFormat;
+        boolean finMovie;
 
         System.out.println("===========================");
         do
@@ -132,14 +136,31 @@ public class SessionManager
             }
         }
         while (ticketPrice.trim().isEmpty() || invalidFormat || Float.parseFloat(ticketPrice) < 0);
-
-        session.setSessionDate(sessionDate);
-        session.setSessionTime(sessionTime);
-        session.setTicketPrice(Float.parseFloat(ticketPrice));
-        session.setHalfTicketPrice(Float.parseFloat(ticketPrice));
-        session.setSessionClose(true);
-        session.setId(idGenerate());
+        
+        do 
+        {
+            finMovie = false;
+            System.out.println("Informe o nome ou ID do filme que será apresentado na sessão:");
+            movieAdd = scanner.nextLine();
+            
+            for (Movie movie : moviesList)
+            {
+                if (movie.getMovieName().equals(movieAdd) || movie.getId().equals(movieAdd))
+                {
+                    movieSession = movie;
+                    finMovie = true;
+                }
+            }
+            if (!finMovie)
+            {
+                System.out.println("Filme não econtrado!\n");
+            }
+        }
+        while (movieAdd.trim().isEmpty() || !finMovie);
+        
+        Session session = new Session(idGenerate(), sessionDate, sessionTime, Float.parseFloat(ticketPrice), true, movieSession);
         sessionList.add(session);
+        System.out.println("Sessão criada com sucesso!\n");
         sessionManagerMenu();
     }
 }

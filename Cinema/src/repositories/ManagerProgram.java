@@ -1,7 +1,9 @@
 package repositories;
 
+import entities.person.Contact;
 import entities.person.Person;
 import entities.person.UserType;
+import entities.person.Address;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,96 @@ public class ManagerProgram
     private static final List<Person> personList = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
 
+    private static Contact addContact ()
+    {
+        String phone;
+        String email;
+        System.out.println("\n\tDADOS DE CONTATO");
+        do
+        {
+            System.out.println("Informe o número de telefone:");
+            phone = scanner.nextLine();
+        }
+        while (phone.trim().isEmpty());
+
+        do
+        {
+            System.out.println("Informe o email:");
+            email = scanner.nextLine();
+        }
+        while (email.trim().isEmpty());
+
+        return new Contact(phone, email);
+    }
+
+    private static Address addressData ()
+    {
+        String state;
+        String city;
+        String neighborhood;
+        String street;
+        String number;
+        boolean invalidData;
+
+        System.out.println("\n\tDADOS DE ENDEREÇO");
+        do
+        {
+            System.out.println("Informe o estado: ");
+            state = scanner.nextLine();
+        }
+        while (state.trim().isEmpty());
+
+        do
+        {
+            System.out.println("Informe a cidade: ");
+            city = scanner.nextLine();
+        }
+        while (city.trim().isEmpty());
+
+        do
+        {
+            System.out.println("Informe o bairro:");
+            neighborhood = scanner.nextLine();
+        }
+        while (neighborhood.trim().isEmpty());
+
+        do
+        {
+            System.out.println("Informe a rua:");
+            street = scanner.nextLine();
+        }
+        while (street.trim().isEmpty());
+
+        do
+        {
+            invalidData = false;
+
+            System.out.println("Informe o número:");
+            number = scanner.nextLine();
+
+            try
+            {
+                if (Integer.parseInt(number) < 0)
+                {
+                    System.out.println("Informe um número válido\n");
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("ERROR: Tipo de dado inválido!\n");
+                invalidData = true;
+            }
+        }
+        while (number.trim().isEmpty() || invalidData || Integer.parseInt(number) < 0);
+
+        return new Address(state, city, neighborhood, street, Integer.parseInt(number));
+    }
+
     private static void addUser ()
     {
         boolean invalidInput;
-        String managerName = null;
+        String userName = null;
+        String userAge;
         String userType;
         UserType user;
 
@@ -33,25 +121,47 @@ public class ManagerProgram
 
             user = null;
 
-            try {
+            try
+            {
                 user = UserType.valueOf(userType);
 
                 do {
-                    System.out.println("Informe o nome do(a) " + user.getUser());
-                    managerName = scanner.nextLine();
+                    System.out.println("Informe o nome do(a) " + user.getUser() + ":");
+                    userName = scanner.nextLine();
 
                 }
-                while (managerName.trim().isEmpty());
+                while (userName.trim().isEmpty());
 
             } catch (IllegalArgumentException e) {
                 System.out.println("Tipo de usuário inválido. Use G ou A.\n");
                 invalidInput = true;
             }
-
         }
         while (userType.trim().isEmpty() || invalidInput);
 
-        Person newUser = new Person(idGenerate(), managerName, user);
+        do
+        {
+            invalidInput = false;
+            System.out.println("Informe a idade do " + user.getUser() + ":");
+            userAge = scanner.nextLine();
+
+            try
+            {
+                if (Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150)
+                {
+                    System.out.println("Informe uma idade válida!\n");
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("ERROR: Tipo de dado inválido!\n");
+                invalidInput = true;
+            }
+        }
+        while (userAge.trim().isEmpty() || invalidInput || Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150);
+
+
+        Person newUser = new Person(idGenerate(), userName, Integer.parseInt(userAge), user, addContact(), addressData());
         personList.add(newUser);
         System.out.println(user.getUser() + " adicionado(a) com sucesso!\n");
     }
@@ -63,10 +173,10 @@ public class ManagerProgram
             System.out.println("A lista está vazia!\n");
             return;
         }
-        System.out.println("\n\tUSUÁRIOS");
+        System.out.println("\n\t ============== USUÁRIOS ==============");
         for (Person user : personList)
         {
-            user.getPerson();
+            user.displayPerson();
         }
     }
 
@@ -89,7 +199,7 @@ public class ManagerProgram
             if (user.getId().equals(idUserSearch))
             {
                 System.out.println("\n\tUSUÁRIO ENCONTRADO");
-                user.getPerson();
+                user.displayPerson();
                 findUser = true;
             }
         }
@@ -108,7 +218,7 @@ public class ManagerProgram
         }
 
         String idUserSearch;
-        Person removedUser = new Person(null, null, null);
+        Person removedUser = new Person(null, null, 0, null, null, null);
         boolean findUser = false;
 
         System.out.println("Informe o ID do(a) usuário(a) que deseja remover:");
@@ -119,7 +229,7 @@ public class ManagerProgram
             if (user.getId().equals(idUserSearch))
             {
                 System.out.println("\n\tUSUÁRIO ENCONTRADO");
-                user.getPerson();
+                user.displayPerson();
                 removedUser = user;
                 findUser = true;
             }
@@ -178,7 +288,7 @@ public class ManagerProgram
             case "2" -> RoomManager.roomMenu();
             case "3" -> SessionManager.sessionManagerMenu();
             case "4" -> userManager();
-            case "5" -> {System.exit(0); System.out.println("Hasta la vista, baby...\n");}
+            case "5" -> {System.out.println("Hasta la vista, baby...\n"); System.exit(0);}
             default -> {System.out.println("Opção inválida!\n"); managerMenu();}
         }
     }

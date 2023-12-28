@@ -12,19 +12,23 @@ import static repositories.ManagerProgram.managerMenu;
 
 public class MoviesManager
 {
-    private static final ArrayList<Movie> moviesList = new ArrayList<>();
+    public static List<Movie> moviesList = new ArrayList<>();
     private static final List<Actor> actorList = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
     private static boolean findMovieName;
 
+    public List<Movie> getMoviesList ()
+    {
+        return moviesList;
+    }
     public static void addPrevMovies ()
     {
-        Movie matrix = new Movie("2962430", "The Matrix", 126, "Ficção científica", "Keanu Reeves", "Neo");
-        Movie wick = new Movie("3027189", "John Wick", 117, "Ação", "Keanu Reeves", "John");
-        Movie inter = new Movie("1663556", "Interestellar", 169, "Ficção", "Mattew McConaghey", "Cooper");
-        Movie ramboI = new Movie("1970961", "Rambo I", 139, "Ação", "Sylvester Stallone", "Rambo");
-        Movie rocky = new Movie("7467448", "Rocky", 128, "Drama", "Sylvester Stallone", "Rocky Balboa");
-        Movie terminator = new Movie("6428301", "O Exterminador do futuro", 137, "Ficção", "Arnold Swaznegger", "Terminator");
+        Movie matrix = new Movie("2962430", "The Matrix", 126, 10,"Ficção científica", "Keanu Reeves", "Neo");
+        Movie wick = new Movie("3027189", "John Wick", 117, 14,"Ação", "Keanu Reeves", "John");
+        Movie inter = new Movie("1663556", "Interestellar", 169, 0,"Ficção científica", "Mattew McConaghey", "Cooper");
+        Movie ramboI = new Movie("1970961", "Rambo I", 139, 16,"Ação", "Sylvester Stallone", "Rambo");
+        Movie rocky = new Movie("7467448", "Rocky", 128, 10,"Drama", "Sylvester Stallone", "Rocky Balboa");
+        Movie terminator = new Movie("6428301", "O Exterminador do futuro", 137, 12,"Ficção científica", "Arnold Swaznegger", "Terminator");
         Actor keanu = new Actor("2589149","Keanu Reeves","Neo", "The Matrix");
         Actor mattew = new Actor("9369829","Mattew McConaghey", "Cooper", "Interestellar");
         Actor stallone = new Actor("8529642","Sylvester Stallone", "Rambo", "Rambo I");
@@ -78,6 +82,8 @@ public class MoviesManager
         {
             System.out.println("Filme " + contMovies);
             movie.movieInfo();
+            System.out.println("=======================================\n");
+
             contMovies++;
         }
     }
@@ -139,11 +145,11 @@ public class MoviesManager
         String movieName;
         String movieGender;
         String movieDuration;
+        String indicativeRating;
         String actorName;
         String characterName;
         boolean findActor;
-
-
+        boolean invalidData;
 
         System.out.println("===========================");
         do
@@ -169,10 +175,9 @@ public class MoviesManager
         }
         while (movieGender.trim().isEmpty() );
 
-        boolean invalidMovieDuration;
         do
         {
-            invalidMovieDuration = false;
+            invalidData = false;
 
             System.out.println("Informe a duração do filme em minutos:");
             movieDuration = scanner.nextLine();
@@ -187,10 +192,31 @@ public class MoviesManager
             catch (NumberFormatException e)
             {
                 System.out.println("ERROR: Tipo de dado inválido!\n");
-                invalidMovieDuration = true;
+                invalidData = true;
             }
         }
-        while (movieDuration.trim().isEmpty() || invalidMovieDuration || Integer.parseInt(movieDuration) <= 0);
+        while (movieDuration.trim().isEmpty() || invalidData || Integer.parseInt(movieDuration) <= 0);
+
+        do
+        {
+            invalidData = false;
+            System.out.println("Informe a classificação indicativa do filme:");
+            indicativeRating = scanner.nextLine();
+
+            try
+            {
+                if (Integer.parseInt(indicativeRating) < 0)
+                {
+                    System.out.println("Informe uma classificação válida!\n");
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("ERROR: Tipo de dado inválido!\n");
+                invalidData = true;
+            }
+        }
+        while(indicativeRating.trim().isEmpty() || invalidData || Integer.parseInt(indicativeRating) < 0);
 
         do
         {
@@ -230,7 +256,7 @@ public class MoviesManager
             actorList.add(newActor);
         }
 
-        Movie movie = new Movie(idGenerate(), movieName, Integer.parseInt(movieDuration), movieGender, actorName, characterName);
+        Movie movie = new Movie(idGenerate(), movieName, Integer.parseInt(movieDuration), Integer.parseInt(indicativeRating), movieGender, actorName, characterName);
         moviesList.add(movie);
         System.out.println("Filme '" + movieName + "' adicionado com sucesso!\n");
         moviesMenu();
