@@ -12,8 +12,8 @@ import static repositories.ManagerProgram.managerMenu;
 
 public class SessionManager
 {
-    static Scanner scanner = new Scanner(System.in);
-    static List<Session> sessionList = new ArrayList<>();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final List<Session> sessionList = new ArrayList<>();
 
     private static void searchSection ()
     {

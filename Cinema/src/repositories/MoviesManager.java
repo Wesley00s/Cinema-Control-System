@@ -1,20 +1,49 @@
 package repositories;
+import entities.movie.Actor;
+import entities.movie.Character;
 import entities.movie.Movie;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import static repositories.ActorManger.actorManager;
 import static repositories.GenerateID.idGenerate;
 import static repositories.ManagerProgram.managerMenu;
 
 public class MoviesManager
 {
-    static ArrayList<Movie> moviesList = new ArrayList<>();
-    static Scanner scanner = new Scanner(System.in);
-    static int contMovies;
-    static boolean findMovieToRemove;
-    static Movie movieRemoved;
-    static boolean invalidMovieDuration;
-    static boolean findMovieName;
+    private static final ArrayList<Movie> moviesList = new ArrayList<>();
+    private static final List<Actor> actorList = new ArrayList<>();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static boolean findMovieName;
+
+    public static void addPrevMovies ()
+    {
+        Movie matrix = new Movie("2962430", "The Matrix", 126, "Ficção científica", "Keanu Reeves", "Neo");
+        Movie wick = new Movie("3027189", "John Wick", 117, "Ação", "Keanu Reeves", "John");
+        Movie inter = new Movie("1663556", "Interestellar", 169, "Ficção", "Mattew McConaghey", "Cooper");
+        Movie ramboI = new Movie("1970961", "Rambo I", 139, "Ação", "Sylvester Stallone", "Rambo");
+        Movie rocky = new Movie("7467448", "Rocky", 128, "Drama", "Sylvester Stallone", "Rocky Balboa");
+        Movie terminator = new Movie("6428301", "O Exterminador do futuro", 137, "Ficção", "Arnold Swaznegger", "Terminator");
+        Actor keanu = new Actor("2589149","Keanu Reeves","Neo", "The Matrix");
+        Actor mattew = new Actor("9369829","Mattew McConaghey", "Cooper", "Interestellar");
+        Actor stallone = new Actor("8529642","Sylvester Stallone", "Rambo", "Rambo I");
+        Actor arnold = new Actor("1119795","Arnold Swarznegger", "Terminator", "O Exterminador do futuro");
+        Character john = new Character("", "John", "John Wick");
+        Character balboa = new Character("", "Rocky Balboa", "Rocky");
+        keanu.characters.add(john);
+        stallone.characters.add(balboa);
+        moviesList.add(matrix);
+        moviesList.add(wick);
+        moviesList.add(inter);
+        moviesList.add(ramboI);
+        moviesList.add(rocky);
+        moviesList.add(terminator);
+        actorList.add(keanu);
+        actorList.add(mattew);
+        actorList.add(stallone);
+        actorList.add(arnold);
+    }
 
     static void searchMovie ()
     {
@@ -22,13 +51,12 @@ public class MoviesManager
         System.out.println("Informe o nome do filme que deseja procurar: ");
         String movieSearch = scanner.nextLine();
 
-
         for (Movie movie : moviesList)
         {
             if (movie.getMovieName().equals(movieSearch))
             {
                 System.out.println("\n\tFILME ENCONTRADO");
-                movie.getMovie();
+                movie.movieInfo();
                 findMovieName = true;
             }
         }
@@ -44,12 +72,12 @@ public class MoviesManager
             System.out.println("A lista de filmes está vazia!");
             return;
         }
-        contMovies = 1;
+        int contMovies = 1;
         System.out.println("\n\tLISTA DE FILMES");
         for (Movie movie : moviesList)
         {
             System.out.println("Filme " + contMovies);
-            movie.getMovie();
+            movie.movieInfo();
             contMovies++;
         }
     }
@@ -60,8 +88,8 @@ public class MoviesManager
             System.out.println("A lista de filmes está vazia.");
             return;
         }
-        findMovieToRemove = false;
-        movieRemoved = null;
+        boolean findMovieToRemove = false;
+        Movie movieRemoved = null;
 
         System.out.println("Informe o nome do filme que deseja remover:");
         String movieRemove = scanner.nextLine();
@@ -86,25 +114,36 @@ public class MoviesManager
     public static void moviesMenu()
     {
         System.out.println("\n\t############## APLICAÇÃO 1 - ADICIONAR FILMES ##############\n");
-        System.out.println("O que deseja?\n1 - Listar filme\n2 - Ver lista\n3 - Remover filme\n4 - Procurar filme\n5 - Retornar");
+        System.out.println("""
+                O que deseja?
+                1 - Listar filme
+                2 - Ver lista
+                3 - Remover filme
+                4 - Procurar filme
+                5 - Vizualizar atores
+                6 - Retornar ao menu do administrador""");
         switch (scanner.nextLine())
         {
             case "1" -> addMovies();
             case "2" -> {showMoviesList(); moviesMenu();}
             case "3" -> {removeMovie(); moviesMenu();}
             case "4" -> {searchMovie(); moviesMenu();}
-            case "5" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
+            case "5" -> actorManager(actorList);
+            case "6" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
             default -> {System.out.println("Opção inválida!\n"); moviesMenu();}
         }
     }
+
     public static void addMovies()
     {
-        Movie movie = new Movie();
         String movieName;
         String movieGender;
         String movieDuration;
-        String actor;
-        String actorRole;
+        String actorName;
+        String characterName;
+        boolean findActor;
+
+
 
         System.out.println("===========================");
         do
@@ -130,6 +169,7 @@ public class MoviesManager
         }
         while (movieGender.trim().isEmpty() );
 
+        boolean invalidMovieDuration;
         do
         {
             invalidMovieDuration = false;
@@ -155,23 +195,42 @@ public class MoviesManager
         do
         {
             System.out.println("Informe o(a) ator(a) principal de '" + movieName + "':");
-            actor = scanner.nextLine();
+            actorName = scanner.nextLine();
+
+
         }
-        while (actor.trim().isEmpty());
+        while (actorName.trim().isEmpty());
 
         do
         {
-            System.out.println("Informe o papel de " + actor + " no filme '" + movieName + "':");
-            actorRole = scanner.nextLine();
-        }
-        while (actorRole.trim().isEmpty());
+            findActor = false;
 
-        movie.setMovieName(movieName);
-        movie.setMovieGender(movieGender);
-        movie.setMovieDuration(Integer.parseInt(movieDuration));
-        movie.setActorName(actor);
-        movie.setActorRole(actorRole);
-        movie.setId(idGenerate());
+            System.out.println("Informe o papel de " + actorName + " no filme '" + movieName + "':");
+            characterName = scanner.nextLine();
+
+        }
+        while (characterName.trim().isEmpty());
+
+        for (Actor actor : actorList)
+        {
+            if (actor.getNameActor().equals(actorName))
+            {
+                Character newCharacter = new Character(actorName, characterName, movieName);
+                if (!actor.characters.contains(newCharacter))
+                {
+                    actor.characters.add(newCharacter);
+                    findActor = true;
+                }
+            }
+        }
+
+        if (!findActor)
+        {
+            Actor newActor = new Actor(idGenerate(), actorName, characterName, movieName);
+            actorList.add(newActor);
+        }
+
+        Movie movie = new Movie(idGenerate(), movieName, Integer.parseInt(movieDuration), movieGender, actorName, characterName);
         moviesList.add(movie);
         System.out.println("Filme '" + movieName + "' adicionado com sucesso!\n");
         moviesMenu();

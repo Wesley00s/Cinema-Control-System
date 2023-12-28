@@ -2,15 +2,17 @@ package entities.session;
 
 public class Seat
 {
-    private int seatCod;
+    private final int seatCod;
     private boolean occupied;
 
-    public void setSeatCod (int seatCod)
+    public Seat (int seatCod, boolean occupied)
     {
         this.seatCod = seatCod;
+        this.occupied = occupied;
     }
 
-    public void setOccupied(boolean occupied) {
+    public void setOccupied(boolean occupied)
+    {
         this.occupied = occupied;
     }
 
@@ -19,7 +21,8 @@ public class Seat
         return seatCod;
     }
 
-    public boolean isOccupied() {
+    public boolean isOccupied()
+    {
         return occupied;
     }
 }

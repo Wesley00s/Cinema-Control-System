@@ -13,7 +13,7 @@ public class GenerateID
         int numId;
         do
         {
-            numId = random.nextInt(1000, 10000);
+            numId = random.nextInt(1000000, 10000000);
         }
         while (!idSet.add(numId));
 

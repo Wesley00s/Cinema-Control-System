@@ -2,16 +2,19 @@ package entities.movie;
 
 public class Movie
 {
-    private String id;
+    private final String id;
     private String movieName;
     private int movieDuration;
     private final Gender movieGender;
-    private final Act actMovie;
+    private final Character characterName;
 
-    public Movie()
-    {
-        this.movieGender = new Gender();
-        this.actMovie = new Act();
+    public Movie(String id, String movieName, int movieDuration, String movieGender, String actorName, String characterName) {
+        this.id = "F-" + id;
+        this.movieName = movieName;
+        this.movieDuration = movieDuration;
+        this.movieGender = new Gender(movieGender);
+        this.characterName = new Character(actorName, characterName, movieName);
+
     }
 
     public void setMovieName (String movieName)
@@ -29,19 +32,9 @@ public class Movie
         this.movieGender.setDescription(movieGender);
     }
 
-    public void setActorName(String actorName)
-    {
-        this.actMovie.setActorName(actorName);
-    }
-
     public void setActorRole (String actorRole)
     {
-        this.actMovie.setRoleInMovie(actorRole);
-    }
-
-    public void setId(String id)
-    {
-        this.id = "F-" + id;
+        this.characterName.setCharacterName(actorRole);
     }
 
     public String getMovieName ()
@@ -61,12 +54,12 @@ public class Movie
 
     public String getActorName ()
     {
-        return actMovie.getActorName();
+        return characterName.getActorName();
     }
 
     public String getActorRole ()
     {
-        return actMovie.getRoleInMovie();
+        return characterName.getCharacterName();
     }
 
     public String getId()
@@ -74,7 +67,7 @@ public class Movie
         return id;
     }
 
-    public void getMovie ()
+    public void movieInfo()
     {
         System.out.println("ID do filme: " + getId());
         System.out.println("Filme: " + getMovieName());

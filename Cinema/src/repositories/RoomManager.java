@@ -137,7 +137,6 @@ public class RoomManager
 
     public static void roomOpc()
     {
-        Room room = new Room();
         String  roomNum;
         String roomCapacity;
         do
@@ -193,8 +192,7 @@ public class RoomManager
         }
         while (roomCapacity.trim().isEmpty() || invalidData || Integer.parseInt(roomCapacity) < 0);
 
-        room.setRoomNum(Integer.parseInt(roomNum));
-        room.setRoomCapacity(Integer.parseInt(roomCapacity));
+        Room room = new Room(Integer.parseInt(roomNum), Integer.parseInt(roomCapacity));
         System.out.println("Sala número '" + roomNum + "' cadastrada com sucesso!\n");
 
         roomList.add(room);

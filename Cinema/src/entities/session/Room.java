@@ -1,11 +1,18 @@
 package entities.session;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Room
 {
-    public ArrayList<Seat> seatList = new ArrayList<>();
+    public List<Seat> seatList = new ArrayList<>();
     private int roomNum;
     private int roomCapacity;
+
+    public Room (int roomNum, int roomCapacity)
+    {
+        this.roomNum = roomNum;
+        this.roomCapacity = roomCapacity;
+    }
 
     public void setRoomNum (int roomNum)
     {
@@ -19,8 +26,7 @@ public class Room
 
     public void setSeatList(int seatCod)
     {
-        Seat newSeat = new Seat();
-        newSeat.setSeatCod(seatCod);
+        Seat newSeat = new Seat(seatCod, false);
         this.seatList.add(newSeat);
     }
 
