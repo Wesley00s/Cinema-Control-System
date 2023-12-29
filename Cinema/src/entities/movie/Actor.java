@@ -18,7 +18,6 @@ public class Actor
 
     public void addCharacter (Character character)
     {
-//        Character character = new Character(this.nameActor, characterName, movieName);
         this.characters.add(character);
     }
     public String getNameActor()
