@@ -7,16 +7,20 @@ public class Actor
 {
     private final String id;
     private final String nameActor;
-    public final List<Character> characters = new ArrayList<>();
+    public final List<Character> characters;
 
-    public Actor(String id, String nameActor, String characterName, String movie)
+    public Actor(String id, String nameActor)
     {
         this.id = "T-" + id;
         this.nameActor = nameActor;
-        Character character = new Character(nameActor, characterName, movie);
-        this.characters.add(character);
+        this.characters = new ArrayList<>();
     }
 
+    public void addCharacter (Character character)
+    {
+//        Character character = new Character(this.nameActor, characterName, movieName);
+        this.characters.add(character);
+    }
     public String getNameActor()
     {
         return nameActor;
@@ -29,7 +33,7 @@ public class Actor
 
     public void characterInfo()
     {
-        System.out.println("\n\tPersonagem - Filme");
+        System.out.println("\n\t\tPersonagem - Filme");
         for (Character character : characters)
         {
             character.characterInfo();
@@ -38,9 +42,8 @@ public class Actor
 
     public void actorInfo ()
     {
-        System.out.println("\nID do ator: " + getId());
-        System.out.println("Nome do ator: " + getNameActor());
+        System.out.println("\tID do ator: " + getId());
+        System.out.println("\tNome do ator: " + getNameActor());
         characterInfo();
-        System.out.println("======================================\n");
     }
 }

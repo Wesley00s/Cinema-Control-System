@@ -2,19 +2,18 @@ package repositories;
 
 import entities.movie.Actor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import static repositories.MoviesManager.moviesMenu;
 
-public class ActorManger
+public class ActorManager
 {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final List<Actor> actorList = new ArrayList<>();
 
-    private static void listActors (List<Actor> actorList)
+    private static void displayListActor(List<Actor> actorList)
     {
+        int contActor = 1;
         if (actorList.isEmpty())
         {
             System.out.println("A lista está vazia!\n");
@@ -23,7 +22,9 @@ public class ActorManger
 
         for (Actor actor : actorList)
         {
+            System.out.println("\n\n* ATOR " + contActor + " ================================\n");
             actor.actorInfo();
+            contActor++;
         }
     }
 
@@ -36,14 +37,14 @@ public class ActorManger
         }
         boolean findActor = false;
         String search;
-        System.out.println("Iforme o ID ou nome do ator que deseja procurar:");
+        System.out.println("Informe o ID ou nome do ator que deseja procurar:");
         search = scanner.nextLine();
 
         for (Actor actor : actorList)
         {
             if (actor.getId().equals(search) || actor.getNameActor().equals(search))
             {
-                System.out.println("\n\tATOR ENCONTRADO");
+                System.out.println("\n* ATOR ENCONTRADO ===========================\n");
                 actor.actorInfo();
                 findActor = true;
             }
@@ -54,7 +55,7 @@ public class ActorManger
         }
     }
 
-    public static void actorManager (List<Actor> actorList)
+    public static void actorManagerMenu(List<Actor> actorList)
     {
         System.out.println("""
                 \nO que desejas?
@@ -63,8 +64,8 @@ public class ActorManger
                 3 - Retornar ao menu de filmes""");
         switch (scanner.nextLine())
         {
-            case "1" -> {listActors(actorList); actorManager(actorList);}
-            case "2" -> {searchActor(actorList); actorManager(actorList);}
+            case "1" -> {displayListActor(actorList); actorManagerMenu(actorList);}
+            case "2" -> {searchActor(actorList); actorManagerMenu(actorList);}
             case "3" -> {System.out.println("Retornando ao menu de filmes..."); moviesMenu();}
         }
     }

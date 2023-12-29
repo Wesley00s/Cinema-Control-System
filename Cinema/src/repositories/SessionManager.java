@@ -44,10 +44,12 @@ public class SessionManager
     }
     static void displaySessions()
     {
-        System.out.println("\n\t ============== SESSÕES ==============");
+        int contSession = 1;
         for (Session session : sessionList)
         {
+            System.out.println("\n\n* SESSÃO " + contSession + " =========================\n");
             session.getSession();
+            contSession++;
         }
     }
     public static void sessionManagerMenu()

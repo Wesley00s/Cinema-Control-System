@@ -98,7 +98,6 @@ public class RoomManager
                 System.out.println("ERROR: Tipo de dado não permitido!\n");
                 invalidData = true;
             }
-
         }
         while (roomNum.trim().isEmpty() || invalidData || Integer.parseInt(roomNum) < 0);
     }
@@ -112,7 +111,7 @@ public class RoomManager
             {
                 for (int i = 0; i < roomSeat.getRoomCapacity(); i++)
                 {
-                    roomSeat.setSeatList(seatCode);
+                    roomSeat.addSeat(seatCode);
                     seatCode++;
                 }
             }

@@ -12,9 +12,10 @@ public class Character {
         this.movieName = movie;
     }
 
-    public void setCharacterName(String characterName)
+
+    public void setCharacterName (String character)
     {
-        this.characterName = characterName;
+        this.characterName = character;
     }
 
     public String getActorName()
@@ -34,6 +35,11 @@ public class Character {
     public void characterInfo ()
     {
         System.out.println("\t------------------------------");
-        System.out.println("\t" + getCharacterName() + " - " + getMovieName());
+        System.out.println("\t\t'" + getCharacterName() + "' - " + getMovieName());
+    }
+
+    public static void main(String[] args) {
+        Character character = new Character("Tobey Maguire", "Peter Park", "Homem-Aranha");
+        character.characterInfo();
     }
 }

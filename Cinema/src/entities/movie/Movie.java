@@ -1,5 +1,7 @@
 package entities.movie;
 
+import java.util.ArrayList;
+
 public class Movie
 {
     private final String id;
@@ -7,16 +9,17 @@ public class Movie
     private int movieDuration;
     private final int  indicativeRating;
     private final Gender movieGender;
-    private final Character characterName;
+    private final Character character;
 
-    public Movie(String id, String movieName, int movieDuration, int indicativeRating, String movieGender, String actorName, String characterName)
+
+    public Movie(String id, String movieName, int movieDuration, int indicativeRating, Gender movieGender, String actorName, Character character)
     {
         this.id = "F-" + id;
         this.movieName = movieName;
         this.movieDuration = movieDuration;
         this.indicativeRating = indicativeRating;
-        this.movieGender = new Gender(movieGender);
-        this.characterName = new Character(actorName, characterName, movieName);
+        this.movieGender = movieGender;
+        this.character = new Character(actorName, character.getCharacterName(), movieName);
     }
 
     public void setMovieName (String movieName)
@@ -36,7 +39,7 @@ public class Movie
 
     public void setActorRole (String actorRole)
     {
-        this.characterName.setCharacterName(actorRole);
+        this.character.setCharacterName(actorRole);
     }
 
     public String getMovieName ()
@@ -56,12 +59,12 @@ public class Movie
 
     public String getActorName ()
     {
-        return characterName.getActorName();
+        return character.getActorName();
     }
 
-    public String getActorRole ()
+    public String getCharacter()
     {
-        return characterName.getCharacterName();
+        return character.getCharacterName();
     }
 
     public String getId()
@@ -82,6 +85,6 @@ public class Movie
         System.out.println("\tDuração (Em minutos): " + getMovieDuration());
         System.out.println("\tClassificação indicativa: " + (getIndicativeRating() == 0 ? "L" : getIndicativeRating()));
         System.out.println("\tAtor(a) principal: " + getActorName());
-        System.out.println("\tPapel do(a) ator(a) " +  getActorName() + ": '" + getActorRole() + "'");
+        System.out.println("\tPapel do(a) ator(a) " +  getActorName() + ": '" + getCharacter() + "'");
     }
 }

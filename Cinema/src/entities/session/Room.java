@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Room
 {
-    public List<Seat> seatList = new ArrayList<>();
+    public List<Seat> seatList;
     private int roomNum;
     private int roomCapacity;
 
@@ -12,6 +12,7 @@ public class Room
     {
         this.roomNum = roomNum;
         this.roomCapacity = roomCapacity;
+        this.seatList = new ArrayList<>();
     }
 
     public void setRoomNum (int roomNum)
@@ -24,7 +25,7 @@ public class Room
         this.roomCapacity = roomCapacity;
     }
 
-    public void setSeatList(int seatCod)
+    public void addSeat(int seatCod)
     {
         Seat newSeat = new Seat(seatCod, false);
         this.seatList.add(newSeat);

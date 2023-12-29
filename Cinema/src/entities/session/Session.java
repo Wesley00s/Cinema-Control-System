@@ -93,7 +93,7 @@ public class Session
 
     public void getSession()
     {
-        System.out.println("\t\tINFORMAÇÕES DA SESSÃO");
+        System.out.println("\t\t* INFORMAÇÕES DA SESSÃO");
         System.out.println("\tID da sessão: " + getId());
         System.out.println("\tData da sessão: " + getSessionDate());
         System.out.println("\tHora da sessão: " + getSessionTime() + "h");
@@ -101,8 +101,7 @@ public class Session
         System.out.println("\tMeio ingresso: " + String.format("R$ %.2f", getHalfTicketPrice()));
         System.out.println("\tSessão fechada: " + (isSessionClose() ? "SIM" : "NÃO"));
         System.out.println("\t------------------------------------");
-        System.out.println("\t\t\tFILME DA SESSÃO");
+        System.out.println("\t\t\t* FILME DA SESSÃO");
         getMovie();
-        System.out.println("\t=======================================\n");
     }
 }

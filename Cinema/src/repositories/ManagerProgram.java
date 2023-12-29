@@ -109,16 +109,15 @@ public class ManagerProgram
         String userType;
         UserType user;
 
-        do {
+        do
+        {
             invalidInput = false;
-
             System.out.println("""
                     Qual tipo de usuário desejas adicionar?
                     G - Gerente
                     A - Atendente""");
 
             userType = scanner.nextLine().toUpperCase();
-
             user = null;
 
             try
@@ -128,7 +127,6 @@ public class ManagerProgram
                 do {
                     System.out.println("Informe o nome do(a) " + user.getUser() + ":");
                     userName = scanner.nextLine();
-
                 }
                 while (userName.trim().isEmpty());
 
