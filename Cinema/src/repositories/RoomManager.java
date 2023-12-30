@@ -37,8 +37,10 @@ public class RoomManager
     public static void addNewRoom ()
     {
         Room room1 = new Room(3, 20);
-        Room room2 = new Room(9, 35);
+        generateSeatCode();
         roomList.add(room1);
+        Room room2 = new Room(9, 35);
+        generateSeatCode();
         roomList.add(room2);
     }
 

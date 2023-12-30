@@ -7,6 +7,7 @@ import entities.session.Session;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import static repositories.ClientProgram.clientMenu;
 import static repositories.GenerateID.idGenerate;
 
 public class Transaction
@@ -41,21 +42,38 @@ public class Transaction
         {
             String seatCod;
             boolean findSeat;
+            boolean invalidOption;
+
+
+                if (client.getAge() <= session.getMovie().getIndicativeRating())
+                {
+                    System.out.println("Querido " + client.getName() + ", infelizmente a classificação " +
+                            "indicaticativa do filme '" + session.getMovie().getMovieName() + "' não é recomendável para sua idade.");
+
+                    clientMenu();
+                }
+                System.out.println("\n-------------------------------------------------");
+                System.out.println("\tCompra de ingresso para: " + session.getMovie().getMovieName());
+                System.out.println("\tData e hora da sessão: " + session.getSessionDate() + " - " + session.getSessionTime() + "h");
+                System.out.println("\tClassificação indicativa: " + session.getMovie().getIndicativeRating());
+
+                do
+                {
+                    invalidOption = false;
+                    System.out.println("\nO que você escolhe?");
+                    System.out.println("1 - ENTRADA: " + String.format("R$ %.2f", session.getTicketPrice()));
+                    System.out.println("2 - MEIA ENTRADA: " + String.format("R$ %.2f", session.getHalfTicketPrice()));
+                    switch (scanner.nextLine())
+                    {
+                        case "1" -> totalPay = session.getTicketPrice();
+                        case "2" -> totalPay = session.getHalfTicketPrice();
+                        default -> {System.out.println("Opção inválida!\n"); invalidOption = true;}
+                    }
+                }
+                while (invalidOption);
 
             do
             {
-                System.out.println("O que você escolhe??");
-
-                System.out.println("1 - ENTRADA: " + String.format("R$ %.2f", session.getTicketPrice()));
-                System.out.println("2 - MEIA ENTRADA: " + String.format("R$ %.2f", session.getHalfTicketPrice()));
-
-                switch (scanner.nextLine())
-                {
-                    case "1" -> totalPay = session.getTicketPrice();
-                    case "2" -> totalPay = session.getHalfTicketPrice();
-                    default -> System.out.println("Opção inválida!\n");
-                }
-
                 findSeat = false;
                 System.out.println("Escolha um assento. Assentos disponíveis!\n");
                 session.getRoom().displaySeatList();
@@ -97,21 +115,13 @@ public class Transaction
 
     public static void generateTicket ()
     {
-        if (client.getAge() >= session.getMovie().getIndicativeRating())
-        {
-            System.out.println("\n\t=================== INGRESSO ====================");
-            System.out.println("\tID da transação: " + getId());
-            System.out.println("\tData e hora da transação " + getDateTimeIssue());
-            System.out.println("\tID da sessão: " + session.getId());
-            System.out.println("\tFilme: " + session.getMovie().getMovieName());
-            System.out.println("\tSala: " + session.getRoom().getRoomNum());
-            System.out.println("\tTotal a pagar: " + String.format("%.2f", totalPay));
-            System.out.println("\tCliente: " + client.getName());
-        }
-        else
-        {
-            System.out.println("Querido " + client.getName() + ", infelizmente a classificação " +
-                    "indicaticativa do filme '" + session.getMovie().getMovieName() + "' não é recomendável para sua idade.");
-        }
+        System.out.println("\n\t=================== INGRESSO ====================");
+        System.out.println("\tID da transação: " + getId());
+        System.out.println("\tData e hora da transação " + getDateTimeIssue());
+        System.out.println("\tID da sessão: " + session.getId());
+        System.out.println("\tFilme: " + session.getMovie().getMovieName());
+        System.out.println("\tSala: " + session.getRoom().getRoomNum());
+        System.out.println("\tTotal a pagar: " + String.format("%.2f", totalPay));
+        System.out.println("\tCliente: " + client.getName());
     }
 }

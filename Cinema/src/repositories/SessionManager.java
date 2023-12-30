@@ -48,9 +48,17 @@ public class SessionManager
 
     public static void addNewSession ()
     {
-        LocalDateTime newDateTime = LocalDateTime.now();
-        Session session1 = new Session(idGenerate(), newDateTime.toLocalDate(), newDateTime.toLocalTime(), 53.31, moviesList.getFirst(), roomList.getFirst());
-        Session session2 = new Session(idGenerate(), newDateTime.toLocalDate(), newDateTime.toLocalTime(), 21.59, moviesList.get(1), roomList.get(1));
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        LocalDate newDate = LocalDate.now();
+        LocalTime newTime = LocalTime.now();
+
+        String formattedDate = newDate.format(dateFormatter);
+        String formattedTime = newTime.format(timeFormatter);
+
+        Session session1 = new Session(idGenerate(), formattedDate, formattedTime, 53.31, moviesList.getFirst(), roomList.getFirst());
+        Session session2 = new Session(idGenerate(), formattedDate, formattedTime, 21.59, moviesList.get(1), roomList.get(1));
         sessionList.add(session1);
         sessionList.add(session2);
 
@@ -110,22 +118,25 @@ public class SessionManager
         Room newRoom = null;
         String numRoomSearch;
         boolean findRoom = false;
+        String formattedDate = null;
+        String formattedTime = null;
 
         do
         {
             invalidFormat = false;
-            System.out.println("\nInforme a data da sessão (no formato YYYY-MM-DD):");
+            System.out.println("\nInforme a data da sessão (no formato DD/MM/YYYY):");
             stringSessionDate = scanner.nextLine();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             try
             {
-                sessionDate = LocalDate.parse(stringSessionDate, formatter);
+                sessionDate = LocalDate.parse(stringSessionDate, dateFormatter);
+                formattedDate = sessionDate.format(dateFormatter);
             }
             catch (DateTimeParseException e)
             {
-                System.out.println("Formato de data inválido. Utilize o formato YYYY-MM-DD.");
+                System.out.println("Formato de data inválido. Utilize o formato DD/MM/YYYY.");
                 invalidFormat = true;
             }
         }
@@ -137,11 +148,14 @@ public class SessionManager
             System.out.println("Informe o horário da sessão (no formato HH:mm):");
             stringSessionTime = scanner.nextLine();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
             try
             {
-                sessionTime = LocalTime.parse(stringSessionTime, formatter);
+                sessionTime = LocalTime.parse(stringSessionTime, timeFormatter);
+                formattedTime = sessionTime.format(timeFormatter);
+                
             }
             catch (DateTimeParseException e)
             {
@@ -193,45 +207,44 @@ public class SessionManager
         }
         while (movieAdd.trim().isEmpty() || !finMovie);
 
+        do
+        {
+            invalidFormat = false;
+            System.out.println("Qual número da sala em que o sessão será apresentada:");
+            numRoomSearch = scanner.nextLine();
 
-            do
+            try
             {
-                invalidFormat = false;
-                System.out.println("Qual número da sala em que o sessão será apresentada:");
-                numRoomSearch = scanner.nextLine();
-
-                try
+                if (Integer.parseInt(numRoomSearch) < 0)
                 {
-                    if (Integer.parseInt(numRoomSearch) < 0)
-                    {
-                        System.out.println("Informe um número válido!\n");
-                    }
-                    else
-                    {
-                        for (Room room : roomList)
-                        {
-                            if (room.getRoomNum() == Integer.parseInt(numRoomSearch))
-                            {
-                                newRoom = room;
-                                findRoom = true;
-                            }
-                        }
-
-                        if (!findRoom)
-                        {
-                            System.out.println("Sala não econttrada!\n");
-                        }
-                    }
+                    System.out.println("Informe um número válido!\n");
                 }
-                catch (NumberFormatException e)
+                else
                 {
-                    System.out.println("ERROR: Tipo de dado inválido!\n");
-                    invalidFormat = true;
+                    for (Room room : roomList)
+                    {
+                        if (room.getRoomNum() == Integer.parseInt(numRoomSearch))
+                        {
+                            newRoom = room;
+                            findRoom = true;
+                        }
+                    }
+
+                    if (!findRoom)
+                    {
+                        System.out.println("Sala não econttrada!\n");
+                    }
                 }
             }
-            while (numRoomSearch.trim().isEmpty() || invalidFormat || !findRoom);
+            catch (NumberFormatException e)
+            {
+                System.out.println("ERROR: Tipo de dado inválido!\n");
+                invalidFormat = true;
+            }
+        }
+        while (numRoomSearch.trim().isEmpty() || invalidFormat || !findRoom);
 
-        Session session = new Session(idGenerate(), sessionDate, sessionTime, Float.parseFloat(ticketPrice), movieSession, newRoom);
+        Session session = new Session(idGenerate(), formattedDate, formattedTime, Float.parseFloat(ticketPrice), movieSession, newRoom);
         sessionList.add(session);
         System.out.println("Sessão criada com sucesso!\n");
     }

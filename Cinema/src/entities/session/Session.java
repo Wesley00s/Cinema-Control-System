@@ -8,15 +8,15 @@ import java.util.List;
 public class Session
 {
     private final String id;
-    private LocalDate sessionDate;
-    private LocalTime sessionTime;
+    private String sessionDate;
+    private String sessionTime;
     private double ticketPrice;
     private double halfTicketPrice;
     private final Room room;
     private Movie movie;
     private final List<Seat> seatList;
 
-    public Session(String id, LocalDate sessionDate, LocalTime sessionTime, double ticketPrice, Movie movie, Room room)
+    public Session(String id, String sessionDate, String sessionTime, double ticketPrice, Movie movie, Room room)
     {
         this.id = "S-" + id;
         this.sessionDate = sessionDate;
@@ -28,12 +28,12 @@ public class Session
         this.seatList = room.getSeatList();
     }
 
-    public void setSessionDate(LocalDate sessionDate)
+    public void setSessionDate(String sessionDate)
     {
         this.sessionDate = sessionDate;
     }
 
-    public void setSessionTime(LocalTime sessionTime)
+    public void setSessionTime(String sessionTime)
     {
         this.sessionTime = sessionTime;
     }
@@ -54,12 +54,12 @@ public class Session
         this.movie = movie;
     }
 
-    public LocalDate getSessionDate()
+    public String getSessionDate()
     {
         return sessionDate;
     }
 
-    public LocalTime getSessionTime()
+    public String getSessionTime()
     {
         return sessionTime;
     }
