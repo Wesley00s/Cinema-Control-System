@@ -14,9 +14,33 @@ import static repositories.ManagerProgram.managerMenu;
 public class MoviesManager
 {
     public static List<Movie> moviesList = new ArrayList<>();
-    private static final List<Actor> actorList = new ArrayList<>();
+    public static final List<Actor> actorList = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
     private static boolean findMovieName;
+
+    public static void moviesMenu()
+    {
+        System.out.println("\n\n\t############## APLICAÇÃO 1 - ADICIONAR FILMES ##############\n");
+        System.out.println("""
+                O que deseja?
+                1 - Listar filme
+                2 - Ver lista
+                3 - Remover filme
+                4 - Procurar filme
+                5 - Vizualizar atores
+                R - Retornar ao menu do administrador""");
+        switch (scanner.nextLine().toUpperCase())
+        {
+            case "1" -> addMovies();
+            case "2" -> {
+                displayMoviesList(); moviesMenu();}
+            case "3" -> {removeMovie(); moviesMenu();}
+            case "4" -> {searchMovie(); moviesMenu();}
+            case "5" -> actorManagerMenu(actorList);
+            case "R" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
+            default -> {System.out.println("Opção inválida!\n"); moviesMenu();}
+        }
+    }
 
     public static void addPrevMovies ()
     {
@@ -83,7 +107,7 @@ public class MoviesManager
             System.out.println("Filme não '" + movieSearch + "' encontrado.\n");
         }
     }
-    static void showMoviesList()
+    public static void displayMoviesList()
     {
         if (moviesList.isEmpty())
         {
@@ -126,28 +150,6 @@ public class MoviesManager
         else
         {
             System.out.println("Filme '" + movieRemove + "' não encontrado.\n");
-        }
-    }
-    public static void moviesMenu()
-    {
-        System.out.println("\n\n\t############## APLICAÇÃO 1 - ADICIONAR FILMES ##############\n");
-        System.out.println("""
-                O que deseja?
-                1 - Listar filme
-                2 - Ver lista
-                3 - Remover filme
-                4 - Procurar filme
-                5 - Vizualizar atores
-                6 - Retornar ao menu do administrador""");
-        switch (scanner.nextLine())
-        {
-            case "1" -> addMovies();
-            case "2" -> {showMoviesList(); moviesMenu();}
-            case "3" -> {removeMovie(); moviesMenu();}
-            case "4" -> {searchMovie(); moviesMenu();}
-            case "5" -> actorManagerMenu(actorList);
-            case "6" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
-            default -> {System.out.println("Opção inválida!\n"); moviesMenu();}
         }
     }
 

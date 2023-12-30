@@ -1,8 +1,10 @@
 package repositories;
 import entities.movie.Movie;
+import entities.session.Room;
 import entities.session.Session;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,12 +13,48 @@ import java.util.*;
 import static repositories.GenerateID.idGenerate;
 import static repositories.ManagerProgram.managerMenu;
 import static repositories.MoviesManager.moviesList;
+import static repositories.RoomManager.roomList;
 
 public class SessionManager
 {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final List<Session> sessionList = new ArrayList<>();
+    public static final List<Session> sessionList = new ArrayList<>();
 
+    public static void sessionManagerMenu()
+    {
+        System.out.println("\n\t############## APLICAÇÃO 3 - GERENCIAR SESSÕES ##############\n");
+        System.out.println("""
+                O que desejas?
+                1 - Adicionar sessão
+                2 - Ver lista de sessões
+                3 - Procurar sessão
+                R - Retornar""");
+        switch (scanner.nextLine().toUpperCase())
+        {
+            case "1" ->
+            {
+                if (roomList.isEmpty())
+                    System.out.println("Nenhuma sala disponível para sessão!\n");
+                else
+                    addSession();
+                sessionManagerMenu();
+            }
+            case "2" -> {displaySessions(); sessionManagerMenu();}
+            case "3" -> {searchSection(); sessionManagerMenu();}
+            case "R" -> {System.out.println("Retornando ao menu do administrador..."); managerMenu();}
+            default -> {System.out.println("Opção inválida!\n"); sessionManagerMenu();}
+        }
+    }
+
+    public static void addNewSession ()
+    {
+        LocalDateTime newDateTime = LocalDateTime.now();
+        Session session1 = new Session(idGenerate(), newDateTime.toLocalDate(), newDateTime.toLocalTime(), 53.31, moviesList.getFirst(), roomList.getFirst());
+        Session session2 = new Session(idGenerate(), newDateTime.toLocalDate(), newDateTime.toLocalTime(), 21.59, moviesList.get(1), roomList.get(1));
+        sessionList.add(session1);
+        sessionList.add(session2);
+
+    }
     private static void searchSection ()
     {
         String sessionId;
@@ -44,6 +82,11 @@ public class SessionManager
     }
     static void displaySessions()
     {
+        if (sessionList.isEmpty())
+        {
+            System.out.println("Nenhuma sessão disponível no momento!\n");
+            return;
+        }
         int contSession = 1;
         for (Session session : sessionList)
         {
@@ -52,19 +95,7 @@ public class SessionManager
             contSession++;
         }
     }
-    public static void sessionManagerMenu()
-    {
-        System.out.println("\n\t############## APLICAÇÃO 3 - GERENCIAR SESSÕES ##############\n");
-        System.out.println("O que desejas?\n1 - Adicionar sessão\n2 - Ver lista de sessões\n3 - Procurar sessão\n4 - Retornar");
-        switch (scanner.nextLine())
-        {
-            case "1" -> addSession();
-            case "2" -> {displaySessions(); sessionManagerMenu();}
-            case "3" -> {searchSection(); sessionManagerMenu();}
-            case "4" -> {System.out.println("Retornando ao menu do administrador..."); managerMenu();}
-            default -> {System.out.println("Opção inválida!\n"); sessionManagerMenu();}
-        }
-    }
+
     private static void addSession()
     {
         LocalDate sessionDate = null;
@@ -76,12 +107,14 @@ public class SessionManager
         Movie movieSession = null;
         boolean invalidFormat;
         boolean finMovie;
+        Room newRoom = null;
+        String numRoomSearch;
+        boolean findRoom = false;
 
-        System.out.println("===========================");
         do
         {
             invalidFormat = false;
-            System.out.println("Informe a data da sessão (no formato YYYY-MM-DD):");
+            System.out.println("\nInforme a data da sessão (no formato YYYY-MM-DD):");
             stringSessionDate = scanner.nextLine();
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -159,10 +192,47 @@ public class SessionManager
             }
         }
         while (movieAdd.trim().isEmpty() || !finMovie);
-        
-        Session session = new Session(idGenerate(), sessionDate, sessionTime, Float.parseFloat(ticketPrice), true, movieSession);
+
+
+            do
+            {
+                invalidFormat = false;
+                System.out.println("Qual número da sala em que o sessão será apresentada:");
+                numRoomSearch = scanner.nextLine();
+
+                try
+                {
+                    if (Integer.parseInt(numRoomSearch) < 0)
+                    {
+                        System.out.println("Informe um número válido!\n");
+                    }
+                    else
+                    {
+                        for (Room room : roomList)
+                        {
+                            if (room.getRoomNum() == Integer.parseInt(numRoomSearch))
+                            {
+                                newRoom = room;
+                                findRoom = true;
+                            }
+                        }
+
+                        if (!findRoom)
+                        {
+                            System.out.println("Sala não econttrada!\n");
+                        }
+                    }
+                }
+                catch (NumberFormatException e)
+                {
+                    System.out.println("ERROR: Tipo de dado inválido!\n");
+                    invalidFormat = true;
+                }
+            }
+            while (numRoomSearch.trim().isEmpty() || invalidFormat || !findRoom);
+
+        Session session = new Session(idGenerate(), sessionDate, sessionTime, Float.parseFloat(ticketPrice), movieSession, newRoom);
         sessionList.add(session);
         System.out.println("Sessão criada com sucesso!\n");
-        sessionManagerMenu();
     }
 }

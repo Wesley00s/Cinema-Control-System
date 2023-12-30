@@ -8,7 +8,8 @@ public class GenerateID
 {
     private static final Set<Integer> idSet = new HashSet<>();
 
-    public static String idGenerate() {
+    public static String idGenerate()
+    {
         Random random = new Random();
         int numId;
         do

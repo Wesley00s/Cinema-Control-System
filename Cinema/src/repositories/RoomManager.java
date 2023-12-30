@@ -3,6 +3,7 @@ import entities.session.Room;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static repositories.GenerateID.idGenerate;
 import static repositories.ManagerProgram.managerMenu;
 
 public class RoomManager
@@ -11,7 +12,37 @@ public class RoomManager
     static Scanner scanner = new Scanner(System.in);
     static boolean invalidData;
 
-    static void showRooms()
+    public static void roomMenu ()
+    {
+        System.out.println("\n\t############## APLICAÇÃO 2 - GERENCIAR SALAS ##############\n");
+        System.out.println("""
+                O que deseja?
+                1 - Cadastrar sala
+                2 - Listar salas
+                3 - Procurar sala
+                4 - Remover cadastro
+                R - Retornar""");
+
+        switch (scanner.nextLine().toUpperCase())
+        {
+            case "1" -> roomOpc();
+            case "2" -> {showRooms(); roomMenu();}
+            case "3" -> {searchRoom(); roomMenu();}
+            case "4" -> {removeRoom(); roomMenu();}
+            case "R" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
+            default -> {System.out.println("Opção inválida!\n"); roomMenu();}
+        }
+    }
+
+    public static void addNewRoom ()
+    {
+        Room room1 = new Room(3, 20);
+        Room room2 = new Room(9, 35);
+        roomList.add(room1);
+        roomList.add(room2);
+    }
+
+    public static void showRooms()
     {
         System.out.println("\n\tSALAS");
         for (Room room : roomList)
@@ -19,7 +50,7 @@ public class RoomManager
             room.getRoom();
         }
     }
-    static void searchRoom()
+    public static void searchRoom()
     {
         String roomNum;
         do
@@ -55,7 +86,7 @@ public class RoomManager
         while (roomNum.trim().isEmpty() || invalidData || Integer.parseInt(roomNum) < 0);
     }
 
-     static void removeRoom ()
+     public static void removeRoom()
     {
         String roomNum;
         Room roomRemoved = null;
@@ -115,22 +146,6 @@ public class RoomManager
                     seatCode++;
                 }
             }
-        }
-    }
-
-    public static void roomMenu ()
-    {
-        System.out.println("\n\t############## APLICAÇÃO 2 - GERENCIAR SALAS ##############\n");
-        System.out.println("O que deseja?\n1 - Cadastrar sala\n2 - Listar salas\n3 - Procurar sala\n4 - Remover cadastro\n5 - Retornar");
-
-        switch (scanner.nextLine())
-        {
-            case "1" -> roomOpc();
-            case "2" -> {showRooms(); roomMenu();}
-            case "3" -> {searchRoom(); roomMenu();}
-            case "4" -> {removeRoom(); roomMenu();}
-            case "5" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
-            default -> {System.out.println("Opção inválida!\n"); roomMenu();}
         }
     }
 

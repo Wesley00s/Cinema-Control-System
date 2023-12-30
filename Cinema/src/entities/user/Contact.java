@@ -1,4 +1,4 @@
-package entities.person;
+package entities.user;
 
 public class Contact
 {

@@ -3,6 +3,7 @@ import entities.movie.Movie;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Session
 {
@@ -11,18 +12,20 @@ public class Session
     private LocalTime sessionTime;
     private double ticketPrice;
     private double halfTicketPrice;
-    private boolean sessionClose;
+    private final Room room;
     private Movie movie;
+    private final List<Seat> seatList;
 
-    public Session(String id, LocalDate sessionDate, LocalTime sessionTime, double ticketPrice, boolean sessionClose, Movie movie)
+    public Session(String id, LocalDate sessionDate, LocalTime sessionTime, double ticketPrice, Movie movie, Room room)
     {
         this.id = "S-" + id;
         this.sessionDate = sessionDate;
         this.sessionTime = sessionTime;
         this.ticketPrice = ticketPrice;
         this.halfTicketPrice = ticketPrice / 2;
-        this.sessionClose = sessionClose;
         this.movie = movie;
+        this.room = room;
+        this.seatList = room.getSeatList();
     }
 
     public void setSessionDate(LocalDate sessionDate)
@@ -44,11 +47,6 @@ public class Session
     {
         this.ticketPrice = ticketPrice;
         this.halfTicketPrice = ticketPrice / 2;
-    }
-
-    public void setSessionClose(boolean sessionClose)
-    {
-        this.sessionClose = sessionClose;
     }
 
     public void setMovie(Movie movie)
@@ -78,7 +76,14 @@ public class Session
 
     public boolean isSessionClose()
     {
-        return sessionClose;
+        for (Seat seat : seatList)
+        {
+            if (seat.isOccupied())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public String getId()
@@ -86,7 +91,12 @@ public class Session
         return id;
     }
 
-    public void getMovie()
+    public Movie getMovie()
+    {
+        return this.movie;
+    }
+
+    public void getMovieInfo()
     {
         movie.movieInfo();
     }
@@ -102,6 +112,16 @@ public class Session
         System.out.println("\tSessão fechada: " + (isSessionClose() ? "SIM" : "NÃO"));
         System.out.println("\t------------------------------------");
         System.out.println("\t\t\t* FILME DA SESSÃO");
-        getMovie();
+        getMovieInfo();
+    }
+
+    public List<Seat> getSeatList()
+    {
+        return seatList;
+    }
+
+    public Room getRoom()
+    {
+        return room;
     }
 }

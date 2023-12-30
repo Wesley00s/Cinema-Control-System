@@ -1,20 +1,20 @@
-package entities.person;
+package entities.user;
 
-public class Person
+public class User
 {
     private final String id;
     private String name;
     private int age;
-    private UserType user;
+    private UserType userType;
     private  Contact contact;
     private Address address;
 
-    public Person(String id, String name, int age, UserType user, Contact contact,  Address address)
+    public User(String id, String name, int age, UserType userType, Contact contact, Address address)
     {
-        this.id = user + "-" + id;
+        this.id = userType + "-" + id;
         this.name = name;
         this.age = age;
-        this.user = user;
+        this.userType = userType;
         this.contact = contact;
         this.address = address;
     }
@@ -24,9 +24,9 @@ public class Person
         this.name = name;
     }
 
-    public void setUser(UserType user)
+    public void setUser(UserType userType)
     {
-        this.user = user;
+        this.userType = userType;
     }
 
     public void setAge(int age)
@@ -56,7 +56,7 @@ public class Person
 
     public UserType getUser()
     {
-        return user;
+        return userType;
     }
 
     public int getAge()

@@ -1,9 +1,9 @@
-package entities.person;
+package entities.user;
 
 public enum UserType {
     G("GERENTE"),
     A("ATENDENTE"),
-    C("USUÁRIO COMUM");
+    C("CLIENTE");
 
     private final String user;
 

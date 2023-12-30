@@ -7,12 +7,14 @@ public class Room
     public List<Seat> seatList;
     private int roomNum;
     private int roomCapacity;
+    private boolean available;
 
     public Room (int roomNum, int roomCapacity)
     {
         this.roomNum = roomNum;
         this.roomCapacity = roomCapacity;
         this.seatList = new ArrayList<>();
+        this.available = false;
     }
 
     public void setRoomNum (int roomNum)
@@ -41,7 +43,7 @@ public class Room
         return roomNum;
     }
 
-    public void getSeatList()
+    public void displaySeatList()
     {
         for (Seat seat : seatList)
         {
@@ -49,12 +51,24 @@ public class Room
         }
     }
 
+    public List<Seat> getSeatList()
+    {
+        return seatList;
+    }
     public void getRoom()
     {
         System.out.println("Número da sala: " + getRoomNum());
         System.out.println("Capacidade da sala: " + getRoomCapacity());
         System.out.println("Acentos disponíveis: ");
-        getSeatList();
+        displaySeatList();
         System.out.println("===========================\n");
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

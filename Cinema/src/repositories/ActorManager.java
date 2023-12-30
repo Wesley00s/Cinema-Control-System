@@ -11,7 +11,7 @@ public class ActorManager
 {
     private static final Scanner scanner = new Scanner(System.in);
 
-    private static void displayListActor(List<Actor> actorList)
+    public static void displayActorsList(List<Actor> actorList)
     {
         int contActor = 1;
         if (actorList.isEmpty())
@@ -64,7 +64,8 @@ public class ActorManager
                 3 - Retornar ao menu de filmes""");
         switch (scanner.nextLine())
         {
-            case "1" -> {displayListActor(actorList); actorManagerMenu(actorList);}
+            case "1" -> {
+                displayActorsList(actorList); actorManagerMenu(actorList);}
             case "2" -> {searchActor(actorList); actorManagerMenu(actorList);}
             case "3" -> {System.out.println("Retornando ao menu de filmes..."); moviesMenu();}
         }

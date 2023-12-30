@@ -1,22 +1,85 @@
 package repositories;
 
-import entities.person.Contact;
-import entities.person.Person;
-import entities.person.UserType;
-import entities.person.Address;
+import entities.user.Contact;
+import entities.user.User;
+import entities.user.UserType;
+import entities.user.Address;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static Utilities.MainMenu.mainMenu;
 import static repositories.GenerateID.idGenerate;
 
 public class ManagerProgram
 {
-    private static final List<Person> personList = new ArrayList<>();
+    private static final List<User> USER_LIST = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
 
-    private static Contact addContact ()
+    public static void managerMenu ()
+    {
+        System.out.println("\n\t############## MENU DO ADMINISTRADOR ##############\n");
+        System.out.println("""
+                Olá, caro administrador! O que deseja?
+                1 - Gerenciar Filmes
+                2 - Gerenciar Salas
+                3 - Gerenciar Sessões
+                4 - Gerenciar Usuários
+                R - Retornar ao menu inicial
+                """);
+        switch (scanner.nextLine().toUpperCase())
+        {
+            case "1" -> MoviesManager.moviesMenu();
+            case "2" -> RoomManager.roomMenu();
+            case "3" -> SessionManager.sessionManagerMenu();
+            case "4" -> userManagerMenu();
+            case "R" -> {System.out.println("Retornando ao menu inicial..."); mainMenu();}
+            default -> {System.out.println("Opção inválida!\n"); managerMenu();}
+        }
+    }
+
+    public static String addName ()
+    {
+        String name;
+        do {
+            System.out.println("Informe o nome:");
+            name = scanner.nextLine();
+        }
+        while (name.trim().isEmpty());
+
+        return name;
+    }
+
+    public static int addAge ()
+    {
+        String userAge;
+        boolean invalidInput;
+        do
+        {
+            invalidInput = false;
+            System.out.println("Informe a idade:");
+            userAge = scanner.nextLine();
+
+            try
+            {
+                if (Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150)
+                {
+                    System.out.println("Informe uma idade válida!\n");
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("ERROR: Tipo de dado inválido!\n");
+                invalidInput = true;
+            }
+        }
+        while (userAge.trim().isEmpty() || invalidInput || Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150);
+
+        return Integer.parseInt(userAge);
+    }
+
+    public static Contact addContact ()
     {
         String phone;
         String email;
@@ -38,7 +101,7 @@ public class ManagerProgram
         return new Contact(phone, email);
     }
 
-    private static Address addressData ()
+    public static Address addAddress()
     {
         String state;
         String city;
@@ -101,11 +164,11 @@ public class ManagerProgram
         return new Address(state, city, neighborhood, street, Integer.parseInt(number));
     }
 
-    private static void addUser ()
+    public static void addUser()
     {
         boolean invalidInput;
-        String userName = null;
-        String userAge;
+//        String userName = null;
+//        String userAge;
         String userType;
         UserType user;
 
@@ -120,15 +183,21 @@ public class ManagerProgram
             userType = scanner.nextLine().toUpperCase();
             user = null;
 
+
             try
             {
                 user = UserType.valueOf(userType);
 
-                do {
-                    System.out.println("Informe o nome do(a) " + user.getUser() + ":");
-                    userName = scanner.nextLine();
-                }
-                while (userName.trim().isEmpty());
+//                void addName ()
+//                {
+//                    do {
+//                        System.out.println("Informe o nome :");
+//                        userName = scanner.nextLine();
+//                    }
+//                    while (userName.trim().isEmpty());
+//                }
+
+//                userName = addName();
 
             } catch (IllegalArgumentException e) {
                 System.out.println("Tipo de usuário inválido. Use G ou A.\n");
@@ -137,50 +206,53 @@ public class ManagerProgram
         }
         while (userType.trim().isEmpty() || invalidInput);
 
-        do
-        {
-            invalidInput = false;
-            System.out.println("Informe a idade do " + user.getUser() + ":");
-            userAge = scanner.nextLine();
+//        void addAge ()
+//        {
+//            do
+//            {
+//                invalidInput = false;
+//                System.out.println("Informe a idade do " + user.getUser() + ":");
+//                userAge = scanner.nextLine();
+//
+//                try
+//                {
+//                    if (Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150)
+//                    {
+//                        System.out.println("Informe uma idade válida!\n");
+//                    }
+//                }
+//                catch (NumberFormatException e)
+//                {
+//                    System.out.println("ERROR: Tipo de dado inválido!\n");
+//                    invalidInput = true;
+//                }
+//            }
+//            while (userAge.trim().isEmpty() || invalidInput || Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150);
+//        }
+//        addAge();
 
-            try
-            {
-                if (Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150)
-                {
-                    System.out.println("Informe uma idade válida!\n");
-                }
-            }
-            catch (NumberFormatException e)
-            {
-                System.out.println("ERROR: Tipo de dado inválido!\n");
-                invalidInput = true;
-            }
-        }
-        while (userAge.trim().isEmpty() || invalidInput || Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150);
-
-
-        Person newUser = new Person(idGenerate(), userName, Integer.parseInt(userAge), user, addContact(), addressData());
-        personList.add(newUser);
+        User newUser = new User(idGenerate(), addName(), addAge(), user, addContact(), addAddress());
+        USER_LIST.add(newUser);
         System.out.println(user.getUser() + " adicionado(a) com sucesso!\n");
     }
 
-    private  static void displayUsers()
+    public static void displayUsers()
     {
-        if (personList.isEmpty())
+        if (USER_LIST.isEmpty())
         {
             System.out.println("A lista está vazia!\n");
             return;
         }
         System.out.println("\n\t ============== USUÁRIOS ==============");
-        for (Person user : personList)
+        for (User user : USER_LIST)
         {
             user.displayPerson();
         }
     }
 
-    private static void searchUser ()
+    public static void searchUser()
     {
-        if (personList.isEmpty())
+        if (USER_LIST.isEmpty())
         {
             System.out.println("A lista está vazia!\n");
             return;
@@ -192,7 +264,7 @@ public class ManagerProgram
         System.out.println("Informe o ID do usuário(a) que deseja procurar:");
         idUserSearch = scanner.nextLine();
 
-        for (Person user : personList)
+        for (User user : USER_LIST)
         {
             if (user.getId().equals(idUserSearch))
             {
@@ -207,22 +279,22 @@ public class ManagerProgram
         }
     }
 
-    private static void removeUser ()
+    public static void removeUser()
     {
-        if (personList.isEmpty())
+        if (USER_LIST.isEmpty())
         {
             System.out.println("A lista está vazia!\n");
             return;
         }
 
         String idUserSearch;
-        Person removedUser = new Person(null, null, 0, null, null, null);
+        User removedUser = null;
         boolean findUser = false;
 
         System.out.println("Informe o ID do(a) usuário(a) que deseja remover:");
         idUserSearch = scanner.nextLine();
 
-        for (Person user : personList)
+        for (User user : USER_LIST)
         {
             if (user.getId().equals(idUserSearch))
             {
@@ -238,7 +310,8 @@ public class ManagerProgram
             System.out.println("Deseja mesmo remover o(a) " + removedUser.getUser().getUser() + " " + removedUser.getName() + "?\nS - Sim\nN - Não");
             switch (scanner.nextLine().toUpperCase())
             {
-                case "S" -> {personList.remove(removedUser); System.out.println("Usuário removido!\n");}
+                case "S" -> {
+                    USER_LIST.remove(removedUser); System.out.println("Usuário removido!\n");}
                 case "N" -> System.out.println("Operação cancelada! Nenhum usuário foi removido!\n");
                 default -> System.out.println("Opção inválida!\n");
             }
@@ -249,7 +322,7 @@ public class ManagerProgram
         }
 
     }
-    private static void userManager()
+    public static void userManagerMenu()
     {
         System.out.println("""
                 O que desejas?
@@ -257,37 +330,17 @@ public class ManagerProgram
                 2 - Ver lista de usuários
                 3 - Procurar usuário
                 4 - Remover usuário
-                5 - Retornar ao menu de admnistrador""");
+                R - Retornar ao menu de admnistrador""");
 
-        switch (scanner.nextLine())
+        switch (scanner.nextLine().toUpperCase())
         {
-            case "1" -> {addUser(); userManager();}
-            case "2" -> {displayUsers(); userManager();}
-            case "3" -> {searchUser(); userManager();}
-            case "4" -> {removeUser(); userManager();}
-            case "5" -> {System.out.println("Retornando ao menu de admnistrador...\n"); managerMenu();}
-            default -> {System.out.println("Opção inválida!"); userManager();}
+            case "1" -> {addUser(); userManagerMenu();}
+            case "2" -> {displayUsers(); userManagerMenu();}
+            case "3" -> {searchUser(); userManagerMenu();}
+            case "4" -> {removeUser(); userManagerMenu();}
+            case "R" -> {System.out.println("Retornando ao menu de admnistrador...\n"); managerMenu();}
+            default -> {System.out.println("Opção inválida!"); userManagerMenu();}
         }
     }
-    public static void managerMenu ()
-    {
-        System.out.println("\n\t############## MENU DO ADMINISTRADOR ##############\n");
-        System.out.println("""
-                Olá, caro administrador! O que deseja?
-                1 - Gerenciar Filmes
-                2 - Gerenciar Salas
-                3 - Gerenciar Sessões
-                4 - Gerenciar Usuários
-                5 - Encerrar programa
-                """);
-        switch (scanner.nextLine())
-        {
-            case "1" -> MoviesManager.moviesMenu();
-            case "2" -> RoomManager.roomMenu();
-            case "3" -> SessionManager.sessionManagerMenu();
-            case "4" -> userManager();
-            case "5" -> {System.out.println("Hasta la vista, baby...\n"); System.exit(0);}
-            default -> {System.out.println("Opção inválida!\n"); managerMenu();}
-        }
-    }
+
 }
