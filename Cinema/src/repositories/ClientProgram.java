@@ -51,6 +51,7 @@ public class ClientProgram
     }
     public static void loginClient ()
     {
+        System.out.println("\n\t############## LOGIN DO CLIENTE ##############");
         System.out.println("\n\tPor favor, preencha seus dados.");
         clientName = addName();
         newClient = new User(clientName, addAge(), UserType.C, addContact(), addAddress(), isStudent());

@@ -86,7 +86,7 @@ public class ManagerProgram
         String managerName;
         String managerPassword;
         boolean findManager = false;
-
+        System.out.println("\n\t############## LOGIN DO ADMINISTRADOR ##############\n");
         System.out.println("Informe seu nome e senha de administrador.");
         System.out.print("Nome: ");
         managerName = scanner.nextLine();

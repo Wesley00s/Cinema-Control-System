@@ -14,13 +14,14 @@ public class MainMenu
     {
         while (true)
         {
-            System.out.println("\n\t############ MENU INICIAL #############\n");
+            System.out.println("\n\t########## MENU INICIAL - SISTEMA GERENCIADOR DE CINEMA ###########\n");
 
             System.out.println("""
-                \tBem vindo ao nosso sistema, querido usuário, que tipo de usuário você é?
-                A - Administrador
-                C - Cliente
-                E - Encerrar programa""");
+                \tBem vindo ao nosso sistema, que tipo de usuário você é?
+                
+                       A - Administrador          
+                       C - Cliente
+                       E - Encerrar programa""");
 
             switch (scanner.nextLine().toUpperCase())
             {
