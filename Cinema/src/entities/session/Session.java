@@ -1,9 +1,9 @@
 package entities.session;
 import entities.movie.Movie;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
+
+import static Utilities.GenerateID.idGenerate;
 
 public class Session
 {
@@ -12,13 +12,17 @@ public class Session
     private String sessionTime;
     private double ticketPrice;
     private double halfTicketPrice;
+    private boolean sessionClose;
     private final Room room;
     private Movie movie;
     private final List<Seat> seatList;
+    private double totalPay;
 
-    public Session(String id, String sessionDate, String sessionTime, double ticketPrice, Movie movie, Room room)
+    private boolean sessionFinish;
+
+    public Session(String sessionDate, String sessionTime, double ticketPrice, Movie movie, Room room)
     {
-        this.id = "S-" + id;
+        this.id = "S-" + idGenerate();
         this.sessionDate = sessionDate;
         this.sessionTime = sessionTime;
         this.ticketPrice = ticketPrice;
@@ -26,6 +30,7 @@ public class Session
         this.movie = movie;
         this.room = room;
         this.seatList = room.getSeatList();
+        this.sessionFinish = false;
     }
 
     public void setSessionDate(String sessionDate)
@@ -74,18 +79,21 @@ public class Session
         return halfTicketPrice;
     }
 
-    public boolean isSessionClose()
+    public void setSessionClose()
     {
         for (Seat seat : seatList)
         {
-            if (seat.isOccupied())
+            if (!seat.isOccupied())
             {
-                return false;
+                this.sessionClose = false;
             }
         }
-        return true;
+        this.sessionClose = true;
     }
-
+    public void closeSession ()
+    {
+        this.sessionClose = true;
+    }
     public String getId()
     {
         return id;
@@ -101,9 +109,36 @@ public class Session
         movie.movieInfo();
     }
 
-    public void getSession()
+    public List<Seat> getSeatList()
+    {
+        return seatList;
+    }
+
+    public Room getRoom()
+    {
+        return room;
+    }
+
+    public void finishSession ()
+    {
+        closeSession();
+        this.sessionFinish = true;
+    }
+
+    public boolean isSessionFinish()
+    {
+        return this.sessionFinish;
+    }
+
+    public boolean isSessionClose()
+    {
+        return sessionClose;
+    }
+
+    public void displaySession()
     {
         System.out.println("\t\t* INFORMAÇÕES DA SESSÃO");
+        System.out.println("\tSituação: " + (isSessionFinish() ? "FINALIZADA" : "ATIVA"));
         System.out.println("\tID da sessão: " + getId());
         System.out.println("\tData da sessão: " + getSessionDate());
         System.out.println("\tHora da sessão: " + getSessionTime() + "h");
@@ -115,13 +150,16 @@ public class Session
         getMovieInfo();
     }
 
-    public List<Seat> getSeatList()
-    {
-        return seatList;
+    public double getTotalPay() {
+        return totalPay;
     }
 
-    public Room getRoom()
+    public void setTotalPay(double totalPay)
     {
-        return room;
+        this.totalPay += totalPay;
     }
+
+//    public void setSessionClose(boolean sessionClose) {
+//        this.sessionClose = sessionClose;
+//    }
 }

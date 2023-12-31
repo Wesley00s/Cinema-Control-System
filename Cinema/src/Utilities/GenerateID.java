@@ -1,4 +1,4 @@
-package repositories;
+package Utilities;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -14,7 +14,7 @@ public class GenerateID
         int numId;
         do
         {
-            numId = random.nextInt(1000000, 10000000);
+            numId = random.nextInt(100000000, 1000000000);
         }
         while (!idSet.add(numId));
 

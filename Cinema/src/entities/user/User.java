@@ -1,5 +1,7 @@
 package entities.user;
 
+import static Utilities.GenerateID.idGenerate;
+
 public class User
 {
     private final String id;
@@ -8,15 +10,17 @@ public class User
     private UserType userType;
     private  Contact contact;
     private Address address;
+    private final boolean isStudent;
 
-    public User(String id, String name, int age, UserType userType, Contact contact, Address address)
+    public User(String name, int age, UserType userType, Contact contact, Address address, boolean isStudent)
     {
-        this.id = userType + "-" + id;
+        this.id = userType + "-" + idGenerate();
         this.name = name;
         this.age = age;
         this.userType = userType;
         this.contact = contact;
         this.address = address;
+        this.isStudent = isStudent;
     }
 
     public void setName(String name)
@@ -88,5 +92,9 @@ public class User
         System.out.println("\t\t\tENDEREÇO");
         getAddress();
         System.out.println("\t====================================\n");
+    }
+
+    public boolean isStudent() {
+        return isStudent;
     }
 }

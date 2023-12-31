@@ -1,8 +1,8 @@
 package entities.user;
 
-public enum UserType {
+public enum UserType
+{
     G("GERENTE"),
-    A("ATENDENTE"),
     C("CLIENTE");
 
     private final String user;
@@ -12,7 +12,8 @@ public enum UserType {
         this.user = user;
     }
 
-    public String getUser() {
+    public String getUser()
+    {
         return user;
     }
 }

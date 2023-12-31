@@ -3,15 +3,17 @@ package entities.movie;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Utilities.GenerateID.idGenerate;
+
 public class Actor
 {
     private final String id;
     private final String nameActor;
     public final List<Character> characters;
 
-    public Actor(String id, String nameActor)
+    public Actor(String nameActor)
     {
-        this.id = "T-" + id;
+        this.id = "T-" + idGenerate();
         this.nameActor = nameActor;
         this.characters = new ArrayList<>();
     }

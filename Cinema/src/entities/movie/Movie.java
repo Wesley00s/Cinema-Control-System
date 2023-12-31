@@ -2,6 +2,8 @@ package entities.movie;
 
 import java.util.ArrayList;
 
+import static Utilities.GenerateID.idGenerate;
+
 public class Movie
 {
     private final String id;
@@ -12,9 +14,9 @@ public class Movie
     private final Character character;
 
 
-    public Movie(String id, String movieName, int movieDuration, int indicativeRating, Gender movieGender, String actorName, Character character)
+    public Movie(String movieName, int movieDuration, int indicativeRating, Gender movieGender, String actorName, Character character)
     {
-        this.id = "F-" + id;
+        this.id = "F-" + idGenerate();
         this.movieName = movieName;
         this.movieDuration = movieDuration;
         this.indicativeRating = indicativeRating;

@@ -3,12 +3,12 @@ import entities.session.Room;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static repositories.GenerateID.idGenerate;
+import static Utilities.PrintSeats.printSeats;
 import static repositories.ManagerProgram.managerMenu;
 
 public class RoomManager
 {
-    static ArrayList<Room> roomList = new ArrayList<>();
+    public static ArrayList<Room> roomList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
     static boolean invalidData;
 
@@ -36,12 +36,12 @@ public class RoomManager
 
     public static void addNewRoom ()
     {
-        Room room1 = new Room(3, 20);
-        generateSeatCode();
+        Room room1 = new Room(3, 3);
         roomList.add(room1);
-        Room room2 = new Room(9, 35);
         generateSeatCode();
+        Room room2 = new Room(9, 35);
         roomList.add(room2);
+        generateSeatCode();
     }
 
     public static void showRooms()
@@ -49,8 +49,9 @@ public class RoomManager
         System.out.println("\n\tSALAS");
         for (Room room : roomList)
         {
-            room.getRoom();
+            printSeats(room);
         }
+
     }
     public static void searchRoom()
     {
@@ -64,9 +65,7 @@ public class RoomManager
             try
             {
                 if (Integer.parseInt(roomNum) < 0)
-                {
                     System.out.println("Informe um valor válido!\n");
-                }
                 else
                 {
                     for (Room room : roomList)
@@ -76,6 +75,8 @@ public class RoomManager
                             System.out.println("\n\tSALA ENCONTRADA\n");
                             room.getRoom();
                         }
+                        else
+                            System.out.println("Sala não encontrada!\n");
                     }
                 }
             }
@@ -102,9 +103,7 @@ public class RoomManager
             try
             {
                 if (Integer.parseInt(roomNum) < 0)
-                {
                     System.out.println("Informe um valor válido!\n");
-                }
                 else
                 {
                     for (Room room : roomList)
@@ -117,13 +116,9 @@ public class RoomManager
                         }
                     }
                     if (roomFind)
-                    {
                         roomList.remove(roomRemoved);
-                    }
                     else
-                    {
                         System.out.println("Sala número '" + roomNum + "' não encontrada!\n");
-                    }
                 }
             }
             catch (NumberFormatException e)
@@ -164,9 +159,7 @@ public class RoomManager
             try
             {
                 if (Integer.parseInt(roomNum) < 0)
-                {
                     System.out.println("Informe um valor válido!\n");
-                }
                 else
                 {
                     for (Room num : roomList)
@@ -196,9 +189,7 @@ public class RoomManager
             try
             {
                 if (Integer.parseInt(roomCapacity) < 0)
-                {
                     System.out.println("Informe um valor válido!\n");
-                }
             }
             catch (NumberFormatException e)
             {

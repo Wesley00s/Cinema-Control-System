@@ -2,12 +2,16 @@ package entities.session;
 
 import java.time.LocalDateTime;
 
+import static Utilities.GenerateID.idGenerate;
+
 public class Ticket
 {
     private double value;
+    private final String id;
 
-    public Ticket(int id, LocalDateTime dateTimeIssue, double value)
+    public Ticket(LocalDateTime dateTimeIssue, double value)
     {
+        this.id = "T-" + idGenerate();
         this.value = value;
     }
 
@@ -21,5 +25,8 @@ public class Ticket
         this.value = value;
     }
 
-
+    public String getId()
+    {
+        return id;
+    }
 }

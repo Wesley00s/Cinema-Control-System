@@ -12,7 +12,6 @@ public class Character {
         this.movieName = movie;
     }
 
-
     public void setCharacterName (String character)
     {
         this.characterName = character;

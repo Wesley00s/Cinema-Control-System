@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static repositories.ActorManager.actorManagerMenu;
-import static repositories.GenerateID.idGenerate;
+import static Utilities.GenerateID.idGenerate;
 import static repositories.ManagerProgram.managerMenu;
 
 public class MoviesManager
@@ -20,8 +20,10 @@ public class MoviesManager
 
     public static void moviesMenu()
     {
-        System.out.println("\n\n\t############## APLICAÇÃO 1 - ADICIONAR FILMES ##############\n");
-        System.out.println("""
+        while (true)
+        {
+            System.out.println("\n\n\t############## APLICAÇÃO 1 - ADICIONAR FILMES ##############\n");
+            System.out.println("""
                 O que deseja?
                 1 - Listar filme
                 2 - Ver lista
@@ -29,25 +31,25 @@ public class MoviesManager
                 4 - Procurar filme
                 5 - Vizualizar atores
                 R - Retornar ao menu do administrador""");
-        switch (scanner.nextLine().toUpperCase())
-        {
-            case "1" -> addMovies();
-            case "2" -> {
-                displayMoviesList(); moviesMenu();}
-            case "3" -> {removeMovie(); moviesMenu();}
-            case "4" -> {searchMovie(); moviesMenu();}
-            case "5" -> actorManagerMenu(actorList);
-            case "R" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
-            default -> {System.out.println("Opção inválida!\n"); moviesMenu();}
+            switch (scanner.nextLine().toUpperCase())
+            {
+                case "1" -> addMovies();
+                case "2" -> displayMoviesList();
+                case "3" -> removeMovie();
+                case "4" -> searchMovie();
+                case "5" -> actorManagerMenu(actorList);
+                case "R" -> {System.out.println("Retornado ao menu do administrador..."); managerMenu();}
+                default -> System.out.println("Opção inválida!\n");
+            }
         }
     }
 
     public static void addPrevMovies ()
     {
-        Actor mattew = new Actor("9369829","Mattew McConaghey");
-        Actor stallone = new Actor("8529642","Sylvester Stallone");
-        Actor arnold = new Actor("1119795","Arnold Swarznegger");
-        Actor keanu = new Actor("2589149","Keanu Reeves");
+        Actor mattew = new Actor("Mattew McConaghey");
+        Actor stallone = new Actor("Sylvester Stallone");
+        Actor arnold = new Actor("Arnold Swarznegger");
+        Actor keanu = new Actor("Keanu Reeves");
 
         Character john = new Character("", "John", "John Wick");
         Character neo = new Character("", "Neo", "The Matrix");
@@ -60,12 +62,12 @@ public class MoviesManager
         Gender scifi = new Gender("Ficção Científica");
         Gender drama = new Gender("Drama");
 
-        Movie matrix = new Movie("2962430", "The Matrix", 126, 10,scifi, keanu.getNameActor(), neo);
-        Movie wick = new Movie("3027189", "John Wick", 117, 14,action, keanu.getNameActor(), john);
-        Movie inter = new Movie("1663556", "Interestellar", 169, 0,scifi, mattew.getNameActor(), cooper);
-        Movie ramboI = new Movie("1970961", "Rambo I", 139, 16,action, stallone.getNameActor(), rambo);
-        Movie rocky = new Movie("7467448", "Rocky", 128, 10,drama, stallone.getNameActor(), balboa);
-        Movie terminator = new Movie("6428301", "O Exterminador do futuro", 137, 12,scifi, arnold.getNameActor(), terminatorC);
+        Movie matrix = new Movie( "The Matrix", 126, 10,scifi, keanu.getNameActor(), neo);
+        Movie wick = new Movie("John Wick", 117, 14,action, keanu.getNameActor(), john);
+        Movie inter = new Movie("Interestellar", 169, 0,scifi, mattew.getNameActor(), cooper);
+        Movie ramboI = new Movie( "Rambo I", 139, 16,action, stallone.getNameActor(), rambo);
+        Movie rocky = new Movie("Rocky", 128, 10,drama, stallone.getNameActor(), balboa);
+        Movie terminator = new Movie( "O Exterminador do futuro", 137, 12,scifi, arnold.getNameActor(), terminatorC);
 
         keanu.addCharacter(neo);
         keanu.addCharacter(john);
@@ -103,9 +105,7 @@ public class MoviesManager
             }
         }
         if (!findMovieName)
-        {
             System.out.println("Filme não '" + movieSearch + "' encontrado.\n");
-        }
     }
     public static void displayMoviesList()
     {
@@ -135,8 +135,10 @@ public class MoviesManager
         System.out.println("Informe o nome do filme que deseja remover:");
         String movieRemove = scanner.nextLine();
 
-        for (Movie movie : moviesList) {
-            if (movie.getMovieName().equals(movieRemove)) {
+        for (Movie movie : moviesList)
+        {
+            if (movie.getMovieName().equals(movieRemove))
+            {
                 System.out.println("Filme '" + movie.getMovieName() + "' removido.\n");
                 movieRemoved = movie;
                 findMovieToRemove = true;
@@ -144,13 +146,9 @@ public class MoviesManager
         }
 
         if (findMovieToRemove)
-        {
             moviesList.remove(movieRemoved);
-        }
         else
-        {
             System.out.println("Filme '" + movieRemove + "' não encontrado.\n");
-        }
     }
 
     public static void addMovies()
@@ -264,13 +262,13 @@ public class MoviesManager
         if (!findActor)
         {
             newCharacter = new Character(actorName, characterName, movieName);
-            Actor newActor = new Actor(idGenerate(), actorName);
+            Actor newActor = new Actor(actorName);
             newActor.addCharacter(newCharacter);
             actorList.add(newActor);
         }
 
         Gender movieGender = new Gender(movieGenderDesc);
-        Movie movie = new Movie(idGenerate(), movieName, Integer.parseInt(movieDuration), Integer.parseInt(indicativeRating), movieGender, actorName, newCharacter);
+        Movie movie = new Movie(movieName, Integer.parseInt(movieDuration), Integer.parseInt(indicativeRating), movieGender, actorName, newCharacter);
         moviesList.add(movie);
         System.out.println("Filme '" + movieName + "' adicionado com sucesso!\n");
         moviesMenu();
