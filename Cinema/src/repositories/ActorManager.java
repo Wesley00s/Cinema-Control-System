@@ -11,6 +11,25 @@ public class ActorManager
 {
     private static final Scanner scanner = new Scanner(System.in);
 
+    public static void actorManagerMenu(List<Actor> actorList)
+    {
+        while (true)
+        {
+            System.out.println("\n\t############## VER ATORES ##############\n");
+            System.out.println("""
+                \nO que desejas?
+                1 - Ver lista de atores
+                2 - Procurar ator
+                3 - Retornar ao menu de filmes""");
+            switch (scanner.nextLine())
+            {
+                case "1" -> displayActorsList(actorList);
+                case "2" -> searchActor(actorList);
+                case "3" -> {System.out.println("Retornando ao menu de filmes..."); moviesMenu();}
+            }
+
+        }
+    }
     public static void displayActorsList(List<Actor> actorList)
     {
         int contActor = 1;
@@ -28,7 +47,7 @@ public class ActorManager
         }
     }
 
-    private static void searchActor (List<Actor> actorList)
+    public static void searchActor(List<Actor> actorList)
     {
         if (actorList.isEmpty())
         {
@@ -50,24 +69,6 @@ public class ActorManager
             }
         }
         if (!findActor)
-        {
             System.out.println("Ator não encontrado!\n");
-        }
-    }
-
-    public static void actorManagerMenu(List<Actor> actorList)
-    {
-        System.out.println("""
-                \nO que desejas?
-                1 - Ver lista de atores
-                2 - Procurar ator
-                3 - Retornar ao menu de filmes""");
-        switch (scanner.nextLine())
-        {
-            case "1" -> {
-                displayActorsList(actorList); actorManagerMenu(actorList);}
-            case "2" -> {searchActor(actorList); actorManagerMenu(actorList);}
-            case "3" -> {System.out.println("Retornando ao menu de filmes..."); moviesMenu();}
-        }
     }
 }

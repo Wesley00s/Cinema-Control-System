@@ -9,10 +9,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 //import static Utilities.HistorySession.total;
-import static Utilities.PrintSeats.printSeats;
-import static Utilities.PrintSeats.redText;
+import static utilities.PrintSeats.printSeats;
+import static utilities.PrintSeats.redText;
 import static repositories.ClientProgram.clientMenu;
-import static Utilities.GenerateID.idGenerate;
+import static utilities.GenerateID.idGenerate;
 
 public class Transaction
 {
@@ -26,12 +26,12 @@ public class Transaction
     public Transaction(User client, Session session)
     {
         id = "T-" + idGenerate();
-        LocalDateTime dateTimeIssue = LocalDateTime.now();
-        this.session = session;
-        this.client = client;
+        Transaction.session = session;
+        Transaction.client = client;
     }
 
-    public static String getDateTimeIssue() {
+    public static String getDateTimeIssue()
+    {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime newDateTime = LocalDateTime.now();
         return newDateTime.format(formatter);
@@ -72,9 +72,8 @@ public class Transaction
                     System.out.println("2 - MEIA ENTRADA: " + String.format("R$ %.2f", session.getHalfTicketPrice()));
                 }
                 else
-                {
                     System.out.println("1 - ENTRADA: " + String.format("R$ %.2f", session.getTicketPrice()));
-                }
+
                 System.out.println("C - CANCELAR");
                 switch (scanner.nextLine().toUpperCase())
                 {
@@ -138,6 +137,7 @@ public class Transaction
     {
         return client;
     }
+
     public Session getSession ()
     {
         return session;

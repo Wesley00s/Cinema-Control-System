@@ -9,6 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+import static utilities.Attempts.TOTAL_ATTEMPTS;
+import static utilities.Attempts.attempts;
+import static utilities.HistorySession.history;
 import static repositories.ManagerProgram.managerMenu;
 import static repositories.MoviesManager.moviesList;
 import static repositories.RoomManager.roomList;
@@ -17,18 +20,20 @@ public class SessionManager
 {
     private static final Scanner scanner = new Scanner(System.in);
     public static List<Session> sessionList = new ArrayList<>();
+    public static List<Session> finishSessionList = new ArrayList<>();
 
     public static void sessionManagerMenu()
     {
         while (true)
         {
-            System.out.println("\n\t############## APLICAÇÃO 3 - GERENCIAR SESSÕES ##############\n");
+            System.out.println("\n\t############## GERENCIAR SESSÕES ##############\n");
             System.out.println("""
                 O que desejas?
                 1 - Adicionar sessão
                 2 - Ver lista de sessões
                 3 - Procurar sessão
                 4 - Finalizar sessão
+                5 - Ver sessões finalizadas
                 R - Retornar""");
             switch (scanner.nextLine().toUpperCase())
             {
@@ -42,25 +47,28 @@ public class SessionManager
                 case "2" -> displaySessions();
                 case "3" -> searchSection();
                 case "4" -> finishSession();
+                case "5" ->  history();
                 case "R" -> {System.out.println("Retornando ao menu do administrador..."); managerMenu();}
                 default -> System.out.println("Opção inválida!\n");
             }
         }
     }
 
-    private static void finishSession()
+    public static void finishSession()
     {
-//        String idSessionFinish;
-//        System.out.println("Informe o ID ds sessão que desaja finalizar!");
-//        idSessionFinish = scanner.nextLine();
-            Session sessionFinish = searchSection();
-        for (Session session : sessionList)
+        Session sessionFinish = searchSection();
+        try
         {
-            if (sessionFinish.equals(session))
+            for (Session session : sessionList)
             {
-                session.finishSession();
+                if (sessionFinish.equals(session))
+                {
+                    session.finishSession();
+                    finishSessionList.add(session);
+                }
             }
         }
+        catch (NullPointerException ignored){}
     }
 
     public static void addNewSession ()
@@ -80,35 +88,33 @@ public class SessionManager
         sessionList.add(session2);
 
     }
-    private static Session searchSection ()
+    public static Session searchSection()
     {
         String sessionId;
         Session sessionSearch = null;
         boolean findSession = false;
-        do
-        {
-            System.out.println("Informe o ID da sessão:");
-            sessionId = scanner.nextLine();
 
-            for (Session session : sessionList)
+        System.out.println("Informe o ID da sessão:");
+        sessionId = scanner.nextLine();
+
+        for (Session session : sessionList)
+        {
+            if (session.getId().equals(sessionId))
             {
-                if (session.getId().equals(sessionId))
-                {
-                    sessionSearch = session;
-                    System.out.println("\n\tSESSÃO ENCONTRADA");
-                    session.displaySession();
-                    findSession = true;
-                }
-            }
-            if (!findSession)
-            {
-                System.out.println("Sessão não encontrada!\n");
+                sessionSearch = session;
+                System.out.println("\n\tSESSÃO ENCONTRADA");
+                session.displaySession();
+                findSession = true;
             }
         }
-        while (sessionId.trim().isEmpty());
+        if (!findSession)
+        {
+            System.out.println("Sessão não encontrada!\n");
+        }
         return sessionSearch;
     }
-    static void displaySessions()
+
+    public static void displaySessions()
     {
         if (sessionList.isEmpty())
         {
@@ -124,27 +130,31 @@ public class SessionManager
         }
     }
 
-    private static void addSession()
+    public static void addSession()
     {
-        LocalDate sessionDate = null;
-        LocalTime sessionTime = null;
+        LocalDate sessionDate;
+        LocalTime sessionTime;
         String stringSessionTime;
+        Movie movieSession = null;
+        Room newRoom = null;
+        String formattedTime = null;
+        String formattedDate = null;
         String stringSessionDate;
         String ticketPrice;
         String movieAdd;
-        Movie movieSession = null;
-        boolean invalidFormat;
-        boolean finMovie;
-        Room newRoom = null;
         String numRoomSearch;
         boolean findRoom = false;
-        String formattedDate = null;
-        String formattedTime = null;
+        boolean finMovie;
+        boolean invalidFormat;
+        int availableAttempt = TOTAL_ATTEMPTS;
 
         do
         {
             invalidFormat = false;
-            System.out.println("\nInforme a data da sessão (no formato DD/MM/YYYY):");
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe a data da sessão (no formato DD/MM/YYYY):");
             stringSessionDate = scanner.nextLine();
 
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -156,19 +166,22 @@ public class SessionManager
             }
             catch (DateTimeParseException e)
             {
-                System.out.println("Formato de data inválido. Utilize o formato DD/MM/YYYY.");
+                System.out.println("Formato de data inválido. Utilize o formato DD/MM/YYYY.\n");
                 invalidFormat = true;
             }
         }
         while (stringSessionDate.trim().isEmpty()|| invalidFormat);
 
+        availableAttempt = TOTAL_ATTEMPTS;
         do
         {
             invalidFormat = false;
-            System.out.println("Informe o horário da sessão (no formato HH:mm):");
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe o horário da sessão (no formato HH:mm):");
             stringSessionTime = scanner.nextLine();
 
-            
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
             try
@@ -185,18 +198,20 @@ public class SessionManager
         }
         while (stringSessionTime.trim().isEmpty() || invalidFormat);
 
+        availableAttempt = TOTAL_ATTEMPTS;
         do
         {
             invalidFormat = false;
-            System.out.println("Informe o preço do ingresso:");
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe o preço do ingresso:");
             ticketPrice = scanner.nextLine();
 
             try
             {
                 if (Float.parseFloat(ticketPrice) < 0)
-                {
                     System.out.println("Informe um valor válido!");
-                }
             }
             catch (NumberFormatException e)
             {
@@ -205,11 +220,16 @@ public class SessionManager
             }
         }
         while (ticketPrice.trim().isEmpty() || invalidFormat || Float.parseFloat(ticketPrice) < 0);
-        
+
+        availableAttempt = TOTAL_ATTEMPTS;
         do 
         {
             finMovie = false;
-            System.out.println("Informe o nome ou ID do filme que será apresentado na sessão:");
+
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe o nome ou ID do filme que será apresentado na sessão:");
             movieAdd = scanner.nextLine();
             
             for (Movie movie : moviesList)
@@ -226,10 +246,14 @@ public class SessionManager
         }
         while (movieAdd.trim().isEmpty() || !finMovie);
 
+        availableAttempt = TOTAL_ATTEMPTS;
         do
         {
             invalidFormat = false;
-            System.out.println("Qual número da sala em que o sessão será apresentada:");
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Qual número da sala em que o sessão será apresentada:");
             numRoomSearch = scanner.nextLine();
 
             try

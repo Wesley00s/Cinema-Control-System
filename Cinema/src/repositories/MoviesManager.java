@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import static repositories.ActorManager.actorManagerMenu;
-import static Utilities.GenerateID.idGenerate;
 import static repositories.ManagerProgram.managerMenu;
+import static utilities.Attempts.TOTAL_ATTEMPTS;
+import static utilities.Attempts.attempts;
 
 public class MoviesManager
 {
@@ -22,7 +23,7 @@ public class MoviesManager
     {
         while (true)
         {
-            System.out.println("\n\n\t############## APLICAÇÃO 1 - ADICIONAR FILMES ##############\n");
+            System.out.println("\n\n\t############## GERENCIAR FILMES ##############\n");
             System.out.println("""
                 O que deseja?
                 1 - Listar filme
@@ -89,7 +90,7 @@ public class MoviesManager
         actorList.add(arnold);
     }
 
-    static void searchMovie ()
+    public static void searchMovie()
     {
         findMovieName = false;
         System.out.println("Informe o nome ou ID do filme que deseja procurar: ");
@@ -122,7 +123,7 @@ public class MoviesManager
             contMovies++;
         }
     }
-    static void removeMovie ()
+    public static void removeMovie()
     {
         if (moviesList.isEmpty())
         {
@@ -132,12 +133,12 @@ public class MoviesManager
         boolean findMovieToRemove = false;
         Movie movieRemoved = null;
 
-        System.out.println("Informe o nome do filme que deseja remover:");
+        System.out.println("Informe o nome ou ID do filme que deseja remover:");
         String movieRemove = scanner.nextLine();
 
         for (Movie movie : moviesList)
         {
-            if (movie.getMovieName().equals(movieRemove))
+            if (movie.getMovieName().equals(movieRemove) || movie.getId().equals(movieRemove))
             {
                 System.out.println("Filme '" + movie.getMovieName() + "' removido.\n");
                 movieRemoved = movie;
@@ -163,10 +164,14 @@ public class MoviesManager
         boolean invalidData;
         Character newCharacter = null;
 
+        int availableAttempt = TOTAL_ATTEMPTS;
         do
         {
             findMovieName = false;
-            System.out.println("Informe o nome do filme:");
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe o nome do filme:");
             movieName = scanner.nextLine();
             for (Movie name : moviesList)
             {
@@ -179,18 +184,25 @@ public class MoviesManager
         }
         while (movieName.trim().isEmpty() || findMovieName);
 
+        availableAttempt = TOTAL_ATTEMPTS;
         do
         {
-            System.out.println("Informe o gênero do filme:");
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe o gênero do filme:");
             movieGenderDesc = scanner.nextLine();
         }
         while (movieGenderDesc.trim().isEmpty() );
 
+        availableAttempt = TOTAL_ATTEMPTS;
         do
         {
             invalidData = false;
+            if (attempts(availableAttempt--))
+                managerMenu();
 
-            System.out.println("Informe a duração do filme em minutos:");
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe a duração do filme em minutos:");
             movieDuration = scanner.nextLine();
 
             try
@@ -208,10 +220,14 @@ public class MoviesManager
         }
         while (movieDuration.trim().isEmpty() || invalidData || Integer.parseInt(movieDuration) <= 0);
 
+        availableAttempt = TOTAL_ATTEMPTS;
         do
         {
             invalidData = false;
-            System.out.println("Informe a classificação indicativa do filme:");
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe a classificação indicativa do filme:");
             indicativeRating = scanner.nextLine();
 
             try
@@ -229,18 +245,25 @@ public class MoviesManager
         }
         while(indicativeRating.trim().isEmpty() || invalidData || Integer.parseInt(indicativeRating) < 0);
 
+        availableAttempt = TOTAL_ATTEMPTS;
         do
         {
-            System.out.println("Informe o(a) ator(a) principal de '" + movieName + "':");
+            if (attempts(availableAttempt--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe o(a) ator(a) principal de '" + movieName + "':");
             actorName = scanner.nextLine();
         }
         while (actorName.trim().isEmpty());
 
+        availableAttempt = TOTAL_ATTEMPTS;
         do
         {
             findActor = false;
+            if (attempts(availableAttempt--))
+                managerMenu();
 
-            System.out.println("Informe o papel de " + actorName + " no filme '" + movieName + "':");
+            System.out.println("(" + (availableAttempt + 1) + " tentativas) Informe o papel de " + actorName + " no filme '" + movieName + "':");
             characterName = scanner.nextLine();
 
         }

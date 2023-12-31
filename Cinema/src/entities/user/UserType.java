@@ -2,7 +2,7 @@ package entities.user;
 
 public enum UserType
 {
-    G("GERENTE"),
+    A("ADMINISTRADOR"),
     C("CLIENTE");
 
     private final String user;

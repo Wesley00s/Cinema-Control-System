@@ -3,7 +3,7 @@ package entities.movie;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Utilities.GenerateID.idGenerate;
+import static utilities.GenerateID.idGenerate;
 
 public class Actor
 {
@@ -22,6 +22,7 @@ public class Actor
     {
         this.characters.add(character);
     }
+
     public String getNameActor()
     {
         return nameActor;

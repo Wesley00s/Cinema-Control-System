@@ -9,16 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static Utilities.HistorySession.history;
-import static Utilities.MainMenu.mainMenu;
-import static repositories.ClientProgram.transactionList;
+import static utilities.Attempts.TOTAL_ATTEMPTS;
+import static utilities.Attempts.attempts;
+import static utilities.MainMenu.mainMenu;
 import static repositories.MoviesManager.moviesMenu;
 import static repositories.RoomManager.roomMenu;
 import static repositories.SessionManager.sessionManagerMenu;
+
 public class ManagerProgram
 {
     private static final List<User> managerList = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
+    private static int availableAttempts;
 
     public static void managerMenu ()
     {
@@ -30,8 +32,7 @@ public class ManagerProgram
                 1 - Gerenciar Filmes
                 2 - Gerenciar Salas
                 3 - Gerenciar Sessões
-                4 - Gerenciar Usuários
-                5 - Ver histórico de sessões
+                4 - Gerenciar Administradores
                 R - Retornar ao menu inicial
                 """);
             switch (scanner.nextLine().toUpperCase())
@@ -39,35 +40,108 @@ public class ManagerProgram
                 case "1" -> moviesMenu();
                 case "2" -> roomMenu();
                 case "3" -> sessionManagerMenu();
-                case "4" -> userManagerMenu();
-                case "5" -> history(transactionList);
+                case "4" -> manageManagerMenu();
                 case "R" -> {System.out.println("Retornando ao menu inicial..."); mainMenu();}
                 default -> System.out.println("Opção inválida!\n");
             }
         }
     }
 
+    public static void manageManagerMenu()
+    {
+        while (true)
+        {
+            System.out.println("\n\t############## GERENCIAR ADMINISTRADORES ##############\n");
+            System.out.println("""
+                O que desejas?
+                1 - Adicionar administrador
+                2 - Ver lista de administradores
+                3 - Procurar administrador
+                4 - Remover administrador
+                R - Retornar ao menu de admnistrador""");
+
+            switch (scanner.nextLine().toUpperCase())
+            {
+                case "1" -> addUser();
+                case "2" -> displayManager();
+                case "3" -> searchManager();
+                case "4" -> removeManager();
+                case "R" -> {System.out.println("Retornando ao menu de admnistrador...\n"); managerMenu();}
+                default -> System.out.println("Opção inválida!");
+            }
+        }
+    }
+
+    public static void addMainManager ()
+    {
+        Contact contact = new Contact("(88)99999-9999", "popscornharry@gmail.com");
+        Address address = new Address("Flavor State", "Flavorville", "Popcorn Heights", "Butter Lane", 78);
+        User mainManager = new User("Harry Pops'corn", 87, UserType.A, contact, address, false);
+        mainManager.setPassword("CineMagic");
+        managerList.add(mainManager);
+    }
+
+    public static void managerLogin ()
+    {
+        String managerName;
+        String managerPassword;
+        boolean findManager = false;
+
+        System.out.println("Informe seu nome e senha de administrador.");
+        System.out.print("Nome: ");
+        managerName = scanner.nextLine();
+        System.out.print("Senha: ");
+        managerPassword = scanner.nextLine();
+
+        for (User manager : managerList)
+        {
+            if (managerName.equals(manager.getName())
+                    && managerPassword.equals(manager.getPassword())
+                    && manager.getUser().equals(UserType.A))
+            {
+                findManager = true;
+                managerMenu();
+            }
+        }
+
+        if (!findManager)
+        {
+            System.out.println("Nome ou senha de administrador inválidos!\n");
+            mainMenu();
+        }
+    }
+
     public static String addName ()
     {
         String name;
+        availableAttempts = TOTAL_ATTEMPTS;
         do
         {
-            System.out.println("Informe o nome:");
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o nome:");
             name = scanner.nextLine();
+
         }
         while (name.trim().isEmpty());
-
         return name;
     }
 
     public static int addAge ()
     {
+        availableAttempts = TOTAL_ATTEMPTS;
         String userAge;
         boolean invalidInput;
+
         do
         {
             invalidInput = false;
-            System.out.println("Informe a idade:");
+
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe a idade:");
             userAge = scanner.nextLine();
 
             try
@@ -81,6 +155,7 @@ public class ManagerProgram
                 System.out.println("ERROR: Tipo de dado inválido!\n");
                 invalidInput = true;
             }
+
         }
         while (userAge.trim().isEmpty() || invalidInput || Integer.parseInt(userAge) < 0 || Integer.parseInt(userAge) > 150);
 
@@ -92,16 +167,25 @@ public class ManagerProgram
         String phone;
         String email;
         System.out.println("\n\tDADOS DE CONTATO");
+
+        availableAttempts = TOTAL_ATTEMPTS;
         do
         {
-            System.out.println("Informe o número de telefone:");
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o número de telefone:");
             phone = scanner.nextLine();
         }
         while (phone.trim().isEmpty());
 
+        availableAttempts = 4;
         do
         {
-            System.out.println("Informe o email:");
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o email:");
             email = scanner.nextLine();
         }
         while (email.trim().isEmpty());
@@ -118,40 +202,59 @@ public class ManagerProgram
         String number;
         boolean invalidData;
 
+        availableAttempts = TOTAL_ATTEMPTS;
         System.out.println("\n\tDADOS DE ENDEREÇO");
         do
         {
-            System.out.println("Informe o estado: ");
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o estado: ");
             state = scanner.nextLine();
         }
         while (state.trim().isEmpty());
 
+        availableAttempts = TOTAL_ATTEMPTS;
         do
         {
-            System.out.println("Informe a cidade: ");
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe a cidade: ");
             city = scanner.nextLine();
         }
         while (city.trim().isEmpty());
 
+        availableAttempts = TOTAL_ATTEMPTS;
         do
         {
-            System.out.println("Informe o bairro:");
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o bairro:");
             neighborhood = scanner.nextLine();
         }
         while (neighborhood.trim().isEmpty());
 
+        availableAttempts = TOTAL_ATTEMPTS;
         do
         {
-            System.out.println("Informe a rua:");
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe a rua:");
             street = scanner.nextLine();
         }
         while (street.trim().isEmpty());
 
+        availableAttempts = TOTAL_ATTEMPTS;
         do
         {
             invalidData = false;
+            if (attempts(availableAttempts--))
+                mainMenu();
 
-            System.out.println("Informe o número:");
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o número:");
             number = scanner.nextLine();
 
             try
@@ -172,27 +275,38 @@ public class ManagerProgram
 
     public static void addUser()
     {
-        System.out.println("\tADICIONAR NOVO GERENTE.\n");
-        User newUser = new User(addName(), addAge(), UserType.G, addContact(), addAddress(), false);
-        managerList.add(newUser);
-        System.out.println("Gerente adicionado(a) com sucesso!\n");
+        String managerPassword;
+        availableAttempts = TOTAL_ATTEMPTS;
+        System.out.println("\tADICIONAR NOVO ADMINISTRADOR.\n");
+        do
+        {
+            if (attempts(availableAttempts--))
+                managerMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Crie a senha do novo administrador: ");
+            managerPassword = scanner.nextLine();
+        }
+        while (managerPassword.trim().isEmpty());
+
+        User newManager = new User(addName(), addAge(), UserType.A, addContact(), addAddress(), false);
+        newManager.setPassword(managerPassword);
+        managerList.add(newManager);
+        System.out.println("Administrador adicionado(a) com sucesso!\n");
     }
 
-    public static void displayUsers()
+    public static void displayManager()
     {
         if (managerList.isEmpty())
         {
             System.out.println("A lista está vazia!\n");
             return;
         }
-        System.out.println("\n\t ============== USUÁRIOS ==============");
+        System.out.println("\n\t ============== ADMINISTRADORES ==============");
         for (User user : managerList)
-        {
-            user.displayPerson();
-        }
+            user.displayUser();
     }
 
-    public static void searchUser()
+    public static void searchManager()
     {
         if (managerList.isEmpty())
         {
@@ -203,87 +317,81 @@ public class ManagerProgram
         String idUserSearch;
         boolean findUser = false;
 
-        System.out.println("Informe o ID do usuário(a) que deseja procurar:");
-        idUserSearch = scanner.nextLine();
+        availableAttempts = TOTAL_ATTEMPTS;
+        do
+        {
+            if (attempts(availableAttempts--))
+                mainMenu();
 
-        for (User user : managerList)
-        {
-            if (user.getId().equals(idUserSearch))
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o ID do administrador que deseja procurar:");
+            idUserSearch = scanner.nextLine();
+
+            for (User user : managerList)
             {
-                System.out.println("\n\tUSUÁRIO ENCONTRADO");
-                user.displayPerson();
-                findUser = true;
+                if (user.getId().equals(idUserSearch))
+                {
+                    System.out.println("\n\tADMINISTRADOR ENCONTRADO");
+                    user.displayUser();
+                    findUser = true;
+                }
             }
+            if (!findUser)
+                System.out.println("Usuário(a) com ID '" + idUserSearch + "' não encontrado!\n");
         }
-        if (!findUser)
-        {
-            System.out.println("Usuário(a) com ID '" + idUserSearch + "' não encontrado!\n");
-        }
+        while (idUserSearch.trim().isEmpty() || !findUser);
     }
 
-    public static void removeUser()
+    public static void removeManager()
     {
         if (managerList.isEmpty())
         {
             System.out.println("A lista está vazia!\n");
             return;
         }
+        else if (managerList.size() == 1)
+        {
+            System.out.println("Um administrador não pode se auto-remover!");
+            return;
+        }
 
-        String idUserSearch;
+        String idManagerSearch;
         User removedManager = null;
-        boolean findManager = false;
+        boolean findManager;
 
-        System.out.println("Informe o ID do(a) usuário(a) que deseja remover:");
-        idUserSearch = scanner.nextLine();
-
-        for (User user : managerList)
+        availableAttempts = TOTAL_ATTEMPTS;
+        do
         {
-            if (user.getId().equals(idUserSearch))
+            findManager = false;
+            if (attempts(availableAttempts--))
+                mainMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o ID do(a) usuário(a) que deseja remover:");
+            idManagerSearch = scanner.nextLine();
+
+            for (User user : managerList)
             {
-                System.out.println("\n\tUSUÁRIO ENCONTRADO");
-                user.displayPerson();
-                removedManager = user;
-                findManager = true;
+                if (user.getId().equals(idManagerSearch))
+                {
+                    System.out.println("\n\tADMINISTRADOR ENCONTRADO");
+                    user.displayUser();
+                    removedManager = user;
+                    findManager = true;
+                }
             }
-        }
 
-        if (findManager)
-        {
-            System.out.println("Deseja mesmo remover o(a) " + removedManager.getUser().getUser() + " " + removedManager.getName() + "?\nS - Sim\nN - Não");
-            switch (scanner.nextLine().toUpperCase())
+            if (findManager)
             {
-                case "S" -> {
-                    managerList.remove(removedManager); System.out.println("Usuário removido!\n");}
-                case "N" -> System.out.println("Operação cancelada! Nenhum usuário foi removido!\n");
-                default -> System.out.println("Opção inválida!\n");
+                System.out.println("Deseja mesmo remover o(a) " + removedManager.getUser().getUser() + " " + removedManager.getName() + "?\nS - Sim\nN - Não");
+                switch (scanner.nextLine().toUpperCase())
+                {
+                    case "S" -> {managerList.remove(removedManager); System.out.println("Usuário removido!\n");}
+                    case "N" -> System.out.println("Operação cancelada! Nenhum usuário foi removido!\n");
+                    default -> System.out.println("Opção inválida!\n");
+                }
             }
+            else
+                System.out.println("Usuário(a) com ID '" + idManagerSearch + "' não encontrado!\n");
         }
-        else
-        {
-            System.out.println("Usuário(a) com ID '" + idUserSearch + "' não encontrado!\n");
-        }
-    }
-    public static void userManagerMenu()
-    {
-        while (true)
-        {
-            System.out.println("""
-                O que desejas?
-                1 - Adicionar administrador
-                2 - Ver lista de administrador
-                3 - Procurar administrador
-                4 - Remover administrador
-                R - Retornar ao menu de admnistrador""");
-
-            switch (scanner.nextLine().toUpperCase())
-            {
-                case "1" -> addUser();
-                case "2" -> displayUsers();
-                case "3" -> searchUser();
-                case "4" -> removeUser();
-                case "R" -> {System.out.println("Retornando ao menu de admnistrador...\n"); managerMenu();}
-                default -> System.out.println("Opção inválida!");
-            }
-        }
+        while (idManagerSearch.trim().isEmpty() || !findManager);
     }
 }

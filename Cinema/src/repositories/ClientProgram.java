@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static Utilities.MainMenu.mainMenu;
+import static utilities.Attempts.attempts;
+import static utilities.MainMenu.mainMenu;
 import static repositories.ActorManager.displayActorsList;
 import static repositories.ManagerProgram.*;
 import static repositories.MoviesManager.actorList;
 import static repositories.MoviesManager.displayMoviesList;
-//import static repositories.SessionManager.displaySessions;
 import static repositories.SessionManager.sessionList;
 
 public class ClientProgram
@@ -23,6 +23,32 @@ public class ClientProgram
     private static User newClient;
     private static String clientName;
 
+    public static void clientMenu ()
+    {
+        System.out.println("\n\n\t############ MENU DO CLIENTE - LOGADO COMO: '" + clientName.toUpperCase() + "' #############");
+        while (true)
+        {
+            System.out.println("""
+                    \n\tOlá, queridissimo cliente, o que desejas?
+                    1 - Fazer reserva
+                    2 - Ver sessões disponíveis
+                    3 - Ver minhas sessões
+                    4 - Ver filmes
+                    5 - Ver atores
+                    6 - Ver meus dados
+                    R - Retornar ao menu inicial""");
+            switch (scanner.nextLine().toUpperCase()) {
+                case "1" -> buyTicket();
+                case "2" -> displayActiveSessions();
+                case "3" -> displayMySessions();
+                case "4" -> displayMoviesList();
+                case "5" -> displayActorsList(actorList);
+                case "6" -> newClient.displayUser();
+                case "R" -> {System.out.println("Retonando ao menu inicial..."); mainMenu();}
+                default -> System.out.println("Opção inválida!");
+            }
+        }
+    }
     public static void loginClient ()
     {
         System.out.println("\n\tPor favor, preencha seus dados.");
@@ -30,7 +56,8 @@ public class ClientProgram
         newClient = new User(clientName, addAge(), UserType.C, addContact(), addAddress(), isStudent());
         clientMenu();
     }
-    static void displayAcitveSessions()
+
+    static void displayActiveSessions()
     {
         if (sessionList.isEmpty())
         {
@@ -48,6 +75,7 @@ public class ClientProgram
             }
         }
     }
+
     public static void verifyClientInSession (Session session)
     {
         for (Transaction transaction : transactionList)
@@ -59,6 +87,7 @@ public class ClientProgram
             }
         }
     }
+
     private static boolean isStudent ()
     {
         while (true)
@@ -77,48 +106,20 @@ public class ClientProgram
             }
         }
     }
-    public static void clientMenu ()
-    {
-        System.out.println("\n\n\t############ MENU DO CLIENTE - LOGADO COMO: '" + clientName.toUpperCase() + "' #############");
-        while (true)
-        {
-
-            System.out.println("""
-                    \n\tOlá, queridissimo cliente, o que desejas?
-                    1 - Fazer reserva
-                    2 - Ver sessões disponíveis
-                    3 - Ver minhas sessões
-                    4 - Ver filmes
-                    5 - Ver atores
-                    6 - Ver meus dados
-                    R - Retornar ao menu inicial""");
-            switch (scanner.nextLine().toUpperCase()) {
-                case "1" -> buyTicket();
-                case "2" -> displayAcitveSessions();
-                case "3" -> displayMySessions();
-                case "4" -> displayMoviesList();
-                case "5" -> displayActorsList(actorList);
-                case "6" -> newClient.displayPerson();
-                case "R" -> {System.out.println("Retonando ao menu inicial..."); mainMenu();}
-                default -> System.out.println("Opção inválida!");
-            }
-        }
-    }
 
     private static void displayMySessions()
     {
+        boolean findSession = false;
         for (Transaction transaction : transactionList)
         {
             if (transaction.getClient().equals(newClient))
             {
                 Transaction.generateTicket();
+                findSession = true;
             }
         }
-    }
-
-    public List<Transaction> getTransactionList ()
-    {
-        return transactionList;
+        if (!findSession)
+            System.out.println("Você não está em nenhuma sessão no momento!\n");
     }
 
     private static void buyTicket ()
@@ -126,11 +127,15 @@ public class ClientProgram
         boolean findSession;
         Session addedSession = null;
         String idSession;
+        int availableAttempts = 4;
 
         do
         {
             findSession = false;
-            System.out.println("Informe o ID da sessão que deseja:");
+            if (attempts(availableAttempts--))
+                clientMenu();
+
+            System.out.println("(" + (availableAttempts + 1) + " tentativas) Informe o ID da sessão que deseja:");
             idSession = scanner.nextLine();
 
             for (Session session : sessionList)
@@ -146,7 +151,7 @@ public class ClientProgram
             if (!findSession)
                 System.out.println("Sessão não encontrada!\n");
         }
-        while (idSession.trim().isEmpty() || !findSession);
+        while (!findSession);
 
         Transaction transaction = new Transaction(newClient, addedSession);
         transaction.generateTransaction();

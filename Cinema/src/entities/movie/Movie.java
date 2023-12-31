@@ -1,8 +1,6 @@
 package entities.movie;
 
-import java.util.ArrayList;
-
-import static Utilities.GenerateID.idGenerate;
+import static utilities.GenerateID.idGenerate;
 
 public class Movie
 {

@@ -1,6 +1,6 @@
 package entities.user;
 
-import static Utilities.GenerateID.idGenerate;
+import static utilities.GenerateID.idGenerate;
 
 public class User
 {
@@ -11,6 +11,7 @@ public class User
     private  Contact contact;
     private Address address;
     private final boolean isStudent;
+    private String password;
 
     public User(String name, int age, UserType userType, Contact contact, Address address, boolean isStudent)
     {
@@ -21,6 +22,16 @@ public class User
         this.contact = contact;
         this.address = address;
         this.isStudent = isStudent;
+    }
+
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+
+    public String getPassword ()
+    {
+        return password;
     }
 
     public void setName(String name)
@@ -78,7 +89,11 @@ public class User
         contact.displayContact();
     }
 
-    public void displayPerson()
+    public boolean isStudent() {
+        return isStudent;
+    }
+
+    public void displayUser()
     {
         System.out.println("\t\t\tDADOS PESSOAIS");
         System.out.println("\tTipo de usuário: " + getUser().getUser());
@@ -92,9 +107,5 @@ public class User
         System.out.println("\t\t\tENDEREÇO");
         getAddress();
         System.out.println("\t====================================\n");
-    }
-
-    public boolean isStudent() {
-        return isStudent;
     }
 }

@@ -36,9 +36,4 @@ public class Character {
         System.out.println("\t------------------------------");
         System.out.println("\t\t'" + getCharacterName() + "' - " + getMovieName());
     }
-
-    public static void main(String[] args) {
-        Character character = new Character("Tobey Maguire", "Peter Park", "Homem-Aranha");
-        character.characterInfo();
-    }
 }

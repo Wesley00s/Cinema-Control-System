@@ -2,7 +2,7 @@ package entities.session;
 
 import java.time.LocalDateTime;
 
-import static Utilities.GenerateID.idGenerate;
+import static utilities.GenerateID.idGenerate;
 
 public class Ticket
 {

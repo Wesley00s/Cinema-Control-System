@@ -3,7 +3,7 @@ import entities.movie.Movie;
 
 import java.util.List;
 
-import static Utilities.GenerateID.idGenerate;
+import static utilities.GenerateID.idGenerate;
 
 public class Session
 {
@@ -94,6 +94,7 @@ public class Session
     {
         this.sessionClose = true;
     }
+
     public String getId()
     {
         return id;
@@ -107,11 +108,6 @@ public class Session
     public void getMovieInfo()
     {
         movie.movieInfo();
-    }
-
-    public List<Seat> getSeatList()
-    {
-        return seatList;
     }
 
     public Room getRoom()
@@ -135,6 +131,15 @@ public class Session
         return sessionClose;
     }
 
+    public double getTotalPay() {
+        return totalPay;
+    }
+
+    public void setTotalPay(double totalPay)
+    {
+        this.totalPay += totalPay;
+    }
+
     public void displaySession()
     {
         System.out.println("\t\t* INFORMAÇÕES DA SESSÃO");
@@ -149,17 +154,4 @@ public class Session
         System.out.println("\t\t\t* FILME DA SESSÃO");
         getMovieInfo();
     }
-
-    public double getTotalPay() {
-        return totalPay;
-    }
-
-    public void setTotalPay(double totalPay)
-    {
-        this.totalPay += totalPay;
-    }
-
-//    public void setSessionClose(boolean sessionClose) {
-//        this.sessionClose = sessionClose;
-//    }
 }
