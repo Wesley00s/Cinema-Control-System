@@ -11,9 +11,9 @@ public class Actor
     private final String nameActor;
     public final List<Character> characters;
 
-    public Actor(String nameActor)
+    public Actor(String id, String nameActor)
     {
-        this.id = "T-" + idGenerate();
+        this.id = "T-" + id;
         this.nameActor = nameActor;
         this.characters = new ArrayList<>();
     }

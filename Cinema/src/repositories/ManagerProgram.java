@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import static utilities.Attempts.TOTAL_ATTEMPTS;
 import static utilities.Attempts.attempts;
+import static utilities.GenerateID.idGenerate;
 import static utilities.MainMenu.mainMenu;
 import static repositories.MoviesManager.moviesMenu;
 import static repositories.RoomManager.roomMenu;
@@ -76,7 +77,7 @@ public class ManagerProgram
     {
         Contact contact = new Contact("(88)99999-9999", "popscornharry@gmail.com");
         Address address = new Address("Flavor State", "Flavorville", "Popcorn Heights", "Butter Lane", 78);
-        User mainManager = new User("Harry Pops'corn", 87, UserType.A, contact, address, false);
+        User mainManager = new User(idGenerate(), "Harry Pops'corn", 87, UserType.A, contact, address, false);
         mainManager.setPassword("CineMagic");
         managerList.add(mainManager);
     }
@@ -288,7 +289,7 @@ public class ManagerProgram
         }
         while (managerPassword.trim().isEmpty());
 
-        User newManager = new User(addName(), addAge(), UserType.A, addContact(), addAddress(), false);
+        User newManager = new User(idGenerate(), addName(), addAge(), UserType.A, addContact(), addAddress(), false);
         newManager.setPassword(managerPassword);
         managerList.add(newManager);
         System.out.println("Administrador adicionado(a) com sucesso!\n");

@@ -11,6 +11,7 @@ import static repositories.ActorManager.actorManagerMenu;
 import static repositories.ManagerProgram.managerMenu;
 import static utilities.Attempts.TOTAL_ATTEMPTS;
 import static utilities.Attempts.attempts;
+import static utilities.GenerateID.idGenerate;
 
 public class MoviesManager
 {
@@ -47,10 +48,10 @@ public class MoviesManager
 
     public static void addPrevMovies ()
     {
-        Actor mattew = new Actor("Mattew McConaghey");
-        Actor stallone = new Actor("Sylvester Stallone");
-        Actor arnold = new Actor("Arnold Swarznegger");
-        Actor keanu = new Actor("Keanu Reeves");
+        Actor mattew = new Actor(idGenerate(),"Mattew McConaghey");
+        Actor stallone = new Actor(idGenerate(),"Sylvester Stallone");
+        Actor arnold = new Actor(idGenerate(),"Arnold Swarznegger");
+        Actor keanu = new Actor(idGenerate(),"Keanu Reeves");
 
         Character john = new Character("", "John", "John Wick");
         Character neo = new Character("", "Neo", "The Matrix");
@@ -63,12 +64,12 @@ public class MoviesManager
         Gender scifi = new Gender("Ficção Científica");
         Gender drama = new Gender("Drama");
 
-        Movie matrix = new Movie( "The Matrix", 126, 10,scifi, keanu.getNameActor(), neo);
-        Movie wick = new Movie("John Wick", 117, 14,action, keanu.getNameActor(), john);
-        Movie inter = new Movie("Interestellar", 169, 0,scifi, mattew.getNameActor(), cooper);
-        Movie ramboI = new Movie( "Rambo I", 139, 16,action, stallone.getNameActor(), rambo);
-        Movie rocky = new Movie("Rocky", 128, 10,drama, stallone.getNameActor(), balboa);
-        Movie terminator = new Movie( "O Exterminador do futuro", 137, 12,scifi, arnold.getNameActor(), terminatorC);
+        Movie matrix = new Movie( idGenerate(), "The Matrix", 126, 10,scifi, keanu.getNameActor(), neo);
+        Movie wick = new Movie(idGenerate(), "John Wick", 117, 14,action, keanu.getNameActor(), john);
+        Movie inter = new Movie(idGenerate(), "Interestellar", 169, 0,scifi, mattew.getNameActor(), cooper);
+        Movie ramboI = new Movie( idGenerate(), "Rambo I", 139, 16,action, stallone.getNameActor(), rambo);
+        Movie rocky = new Movie(idGenerate(), "Rocky", 128, 10,drama, stallone.getNameActor(), balboa);
+        Movie terminator = new Movie( idGenerate(), "O Exterminador do futuro", 137, 12,scifi, arnold.getNameActor(), terminatorC);
 
         keanu.addCharacter(neo);
         keanu.addCharacter(john);
@@ -285,13 +286,13 @@ public class MoviesManager
         if (!findActor)
         {
             newCharacter = new Character(actorName, characterName, movieName);
-            Actor newActor = new Actor(actorName);
+            Actor newActor = new Actor(idGenerate(), actorName);
             newActor.addCharacter(newCharacter);
             actorList.add(newActor);
         }
 
         Gender movieGender = new Gender(movieGenderDesc);
-        Movie movie = new Movie(movieName, Integer.parseInt(movieDuration), Integer.parseInt(indicativeRating), movieGender, actorName, newCharacter);
+        Movie movie = new Movie(idGenerate(), movieName, Integer.parseInt(movieDuration), Integer.parseInt(indicativeRating), movieGender, actorName, newCharacter);
         moviesList.add(movie);
         System.out.println("Filme '" + movieName + "' adicionado com sucesso!\n");
         moviesMenu();

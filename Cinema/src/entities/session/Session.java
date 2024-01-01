@@ -20,9 +20,9 @@ public class Session
 
     private boolean sessionFinish;
 
-    public Session(String sessionDate, String sessionTime, double ticketPrice, Movie movie, Room room)
+    public Session(String id, String sessionDate, String sessionTime, double ticketPrice, Movie movie, Room room)
     {
-        this.id = "S-" + idGenerate();
+        this.id = "S-" + id;
         this.sessionDate = sessionDate;
         this.sessionTime = sessionTime;
         this.ticketPrice = ticketPrice;

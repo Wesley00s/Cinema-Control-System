@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static utilities.Attempts.attempts;
+import static utilities.GenerateID.idGenerate;
 import static utilities.MainMenu.mainMenu;
 import static repositories.ActorManager.displayActorsList;
 import static repositories.ManagerProgram.*;
@@ -54,7 +55,7 @@ public class ClientProgram
         System.out.println("\n\t############## LOGIN DO CLIENTE ##############");
         System.out.println("\n\tPor favor, preencha seus dados.");
         clientName = addName();
-        newClient = new User(clientName, addAge(), UserType.C, addContact(), addAddress(), isStudent());
+        newClient = new User(idGenerate(), clientName, addAge(), UserType.C, addContact(), addAddress(), isStudent());
         clientMenu();
     }
 
@@ -154,7 +155,8 @@ public class ClientProgram
         }
         while (!findSession);
 
-        Transaction transaction = new Transaction(newClient, addedSession);
+        Transaction transaction = new Transaction(idGenerate(), newClient, addedSession);
+
         transaction.generateTransaction();
         transactionList.add(transaction);
     }

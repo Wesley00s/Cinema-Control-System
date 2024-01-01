@@ -13,9 +13,9 @@ public class User
     private final boolean isStudent;
     private String password;
 
-    public User(String name, int age, UserType userType, Contact contact, Address address, boolean isStudent)
+    public User(String id, String name, int age, UserType userType, Contact contact, Address address, boolean isStudent)
     {
-        this.id = userType + "-" + idGenerate();
+        this.id = userType + "-" + id;
         this.name = name;
         this.age = age;
         this.userType = userType;

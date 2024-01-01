@@ -11,6 +11,7 @@ import java.util.*;
 
 import static utilities.Attempts.TOTAL_ATTEMPTS;
 import static utilities.Attempts.attempts;
+import static utilities.GenerateID.idGenerate;
 import static utilities.HistorySession.history;
 import static repositories.ManagerProgram.managerMenu;
 import static repositories.MoviesManager.moviesList;
@@ -82,8 +83,8 @@ public class SessionManager
         String formattedDate = newDate.format(dateFormatter);
         String formattedTime = newTime.format(timeFormatter);
 
-        Session session1 = new Session(formattedDate, formattedTime, 53.31, moviesList.getFirst(), roomList.getFirst());
-        Session session2 = new Session(formattedDate, formattedTime, 21.59, moviesList.get(1), roomList.get(1));
+        Session session1 = new Session(idGenerate(), formattedDate, formattedTime, 53.31, moviesList.getFirst(), roomList.getFirst());
+        Session session2 = new Session(idGenerate(), formattedDate, formattedTime, 21.59, moviesList.get(1), roomList.get(1));
         sessionList.add(session1);
         sessionList.add(session2);
 
@@ -283,7 +284,7 @@ public class SessionManager
         }
         while (numRoomSearch.trim().isEmpty() || invalidFormat || !findRoom);
 
-        Session session = new Session(formattedDate, formattedTime, Float.parseFloat(ticketPrice), movieSession, newRoom);
+        Session session = new Session(idGenerate(), formattedDate, formattedTime, Float.parseFloat(ticketPrice), movieSession, newRoom);
         sessionList.add(session);
         System.out.println("Sessão criada com sucesso!\n");
     }

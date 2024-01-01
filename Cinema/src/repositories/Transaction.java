@@ -8,11 +8,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-//import static Utilities.HistorySession.total;
 import static utilities.PrintSeats.printSeats;
 import static utilities.PrintSeats.redText;
 import static repositories.ClientProgram.clientMenu;
-import static utilities.GenerateID.idGenerate;
 
 public class Transaction
 {
@@ -23,9 +21,9 @@ public class Transaction
     private static double totalPay;
     private static String seatCod;
 
-    public Transaction(User client, Session session)
+    public Transaction(String id, User client, Session session)
     {
-        id = "T-" + idGenerate();
+        Transaction.id = "T-" + id;
         Transaction.session = session;
         Transaction.client = client;
     }
